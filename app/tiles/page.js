@@ -8,6 +8,7 @@ import BackgroundShapes from "@/components/BackgroundShapes";
 import { Eye, AlertTriangle, ArrowRight, Sparkles, ExternalLink, ChevronLeft, ChevronRight, LayoutGrid } from "lucide-react";
 
 const ITEMS_PER_PAGE = 24;
+const SERIES_PER_PAGE = 9;
 
 export default function TilesMarketplace() {
   const [tiles, setTiles] = useState([]);
@@ -18,6 +19,7 @@ export default function TilesMarketplace() {
   const [selectedDim, setSelectedDim] = useState("600x1200"); // 600x600, 600x1200, 195x1200
   const [selectedSeries, setSelectedSeries] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentSeriesPage, setCurrentSeriesPage] = useState(1);
 
   useEffect(() => {
     async function loadData() {
@@ -39,11 +41,27 @@ export default function TilesMarketplace() {
   // Filter series dynamically by selected dimension
   const currentSeriesList = series.filter(s => s.dimension === selectedDim);
 
+  // Series pagination calculation
+  const totalSeriesPages = Math.ceil(currentSeriesList.length / SERIES_PER_PAGE);
+  const paginatedSeriesList = currentSeriesList.slice(
+    (currentSeriesPage - 1) * SERIES_PER_PAGE,
+    currentSeriesPage * SERIES_PER_PAGE
+  );
+
   // Sync dimension change
   const handleDimChange = (dim) => {
     setSelectedDim(dim);
     setSelectedSeries(null); // Reset active series on dimension swap
     setCurrentPage(1);
+    setCurrentSeriesPage(1); // Reset series page
+  };
+
+  const handleSeriesPageChange = (page) => {
+    if (page >= 1 && page <= totalSeriesPages) {
+      setCurrentSeriesPage(page);
+      // Smooth scroll back to top of listings
+      window.scrollTo({ top: 120, behavior: "smooth" });
+    }
   };
 
   // Map dimension to the correct CSS aspect-ratio value.
@@ -165,64 +183,117 @@ export default function TilesMarketplace() {
                   </p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {currentSeriesList.map((ser, index) => {
-                    const seriesTiles = tiles.filter(t => (t.dimension || "600x1200") === selectedDim && t.series === ser.name);
-                    const finishTypes = [...new Set(seriesTiles.map(t => t.finish || "Glossy"))];
-                    
-                    return (
-                      <motion.div
-                        key={ser.id}
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                        onClick={() => handleSelectSeries(ser.name)}
-                        className="group relative h-[420px] rounded-[2.5rem] bg-white border border-slate-200/55 shadow-xs overflow-hidden cursor-pointer transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 flex flex-col justify-end"
-                      >
-                        {/* Background Image with Hover Scale */}
-                        <div className="absolute inset-0">
-                          <img 
-                            src={ser.image_url || 'https://images.unsplash.com/photo-1501183007986-d0d080b147f9?auto=format&fit=crop&w=400&q=80'} 
-                            alt={ser.name}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                          />
-                          {/* Gradient Overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-transparent transition-opacity duration-300 group-hover:via-slate-950/50" />
-                        </div>
-
-                        {/* Top Technical Dimension Tag */}
-                        {/* <div className="absolute top-6 left-6 z-20">
-                          <span className="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-xs">
-                            {selectedDim === "600x600" ? "600x600 MM Slabs" : selectedDim === "600x1200" ? "600x1200 MM Panels" : "195x1200 MM Wood Planks"}
-                          </span>
-                        </div> */}
-
-                        {/* Bottom Info Content */}
-                        <div className="relative p-8 space-y-4 z-20">
-                          <div className="space-y-1">
-                            <h3 className="font-black text-2xl md:text-3xl text-white tracking-tight leading-tight transition-colors duration-300">
-                              {ser.name}
-                            </h3>
-                            <p className="text-slate-300 text-xs font-medium uppercase tracking-wider flex items-center space-x-1.5">
-                              {/* <Sparkles size={12} className="text-amber-400" /> */}
-                              <span>{finishTypes.join(" / ") || "Premium Finishes"}</span>
-                            </p>
+                <div className="space-y-12">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {paginatedSeriesList.map((ser, index) => {
+                      const seriesTiles = tiles.filter(t => (t.dimension || "600x1200") === selectedDim && t.series === ser.name);
+                      const finishTypes = [...new Set(seriesTiles.map(t => t.finish || "Glossy"))];
+                      
+                      return (
+                        <motion.div
+                          key={ser.id}
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                          onClick={() => handleSelectSeries(ser.name)}
+                          className="group relative h-[260px] rounded-2xl bg-white border border-slate-200/55 shadow-xs overflow-hidden cursor-pointer transition-all duration-500 hover:shadow-2xl hover:-translate-y-1.5 flex flex-col justify-end"
+                        >
+                          {/* Background Image with Hover Scale */}
+                          <div className="absolute inset-0">
+                            <img 
+                              src={ser.image_url || 'https://images.unsplash.com/photo-1501183007986-d0d080b147f9?auto=format&fit=crop&w=400&q=80'} 
+                              alt={ser.name}
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
+                            {/* Gradient Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-transparent transition-opacity duration-300 group-hover:via-slate-950/50" />
                           </div>
 
-                          <div className="flex items-center justify-between pt-4 border-t border-white/15">
-                            <span className="text-[10px] font-extrabold tracking-widest uppercase text-white  bg-transparent border border-accent/20 px-3 py-1 rounded-md">
-                              {seriesTiles.length === 1 ? "1 Design Available" : `${seriesTiles.length} Designs Available`}
-                            </span>
-                            
-                            <span className="text-xs font-black text-white/80 hover:text-white transition-colors flex items-center space-x-1 cursor-pointer">
-                              <span>Explore Curation</span>
-                              <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-                            </span>
+                          {/* Bottom Info Content */}
+                          <div className="relative p-5 md:p-6 space-y-2.5 z-20">
+                            <div className="space-y-1">
+                              <h3 className="font-black text-lg md:text-xl text-white tracking-tight leading-tight transition-colors duration-300">
+                                {ser.name}
+                              </h3>
+                              <p className="text-slate-300 text-[10px] font-medium uppercase tracking-wider flex items-center space-x-1.5">
+                                <span>{finishTypes.join(" / ") || "Premium Finishes"}</span>
+                              </p>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-3 border-t border-white/15">
+                              <span className="text-[9px] font-extrabold tracking-widest uppercase text-white bg-transparent border border-accent/20 px-2.5 py-1 rounded-md">
+                                {seriesTiles.length === 1 ? "1 Design Available" : `${seriesTiles.length} Designs Available`}
+                              </span>
+                              
+                              <span className="text-xs font-black text-white/80 hover:text-white transition-colors flex items-center space-x-1 cursor-pointer">
+                                <span>Explore Curation</span>
+                                <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Series Pagination Footer */}
+                  {totalSeriesPages > 1 && (
+                    <div className="flex flex-col items-center space-y-4 pt-6 border-t border-slate-200/60">
+                      
+                      <div className="flex items-center space-x-2">
+                        {/* Previous Button */}
+                        <button
+                          onClick={() => handleSeriesPageChange(currentSeriesPage - 1)}
+                          disabled={currentSeriesPage === 1}
+                          className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-300 shadow-2xs select-none ${
+                            currentSeriesPage === 1
+                              ? "bg-slate-50 border-slate-200 text-slate-300 cursor-not-allowed"
+                              : "bg-white border-slate-200 text-slate-600 hover:border-slate-400 hover:scale-105 active:scale-95 cursor-pointer"
+                          }`}
+                        >
+                          <ChevronLeft size={16} />
+                        </button>
+
+                        {/* Numbered Pages */}
+                        {Array.from({ length: totalSeriesPages }, (_, index) => {
+                          const pageNum = index + 1;
+                          const isActive = pageNum === currentSeriesPage;
+                          return (
+                            <button
+                              key={pageNum}
+                              onClick={() => handleSeriesPageChange(pageNum)}
+                              className={`w-10 h-10 rounded-xl border flex items-center justify-center font-mono text-xs font-bold transition-all duration-300 shadow-2xs cursor-pointer ${
+                                isActive
+                                  ? "bg-accent border-accent text-white scale-105 shadow-md shadow-accent/15"
+                                  : "bg-white border-slate-200 text-slate-600 hover:text-primary hover:border-slate-300 hover:bg-slate-50"
+                              }`}
+                            >
+                              {pageNum}
+                            </button>
+                          );
+                        })}
+
+                        {/* Next Button */}
+                        <button
+                          onClick={() => handleSeriesPageChange(currentSeriesPage + 1)}
+                          disabled={currentSeriesPage === totalSeriesPages}
+                          className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-300 shadow-2xs select-none ${
+                            currentSeriesPage === totalSeriesPages
+                              ? "bg-slate-50 border-slate-200 text-slate-300 cursor-not-allowed"
+                              : "bg-white border-slate-200 text-slate-600 hover:border-slate-400 hover:scale-105 active:scale-95 cursor-pointer"
+                          }`}
+                        >
+                          <ChevronRight size={16} />
+                        </button>
+                      </div>
+
+                      {/* Pagination Description */}
+                      <span className="text-[10px] font-mono text-slate-400 font-bold uppercase tracking-widest select-none">
+                        Page {currentSeriesPage} of {totalSeriesPages}
+                      </span>
+
+                    </div>
+                  )}
                 </div>
               )}
             </motion.div>
@@ -297,7 +368,7 @@ export default function TilesMarketplace() {
                           className="group relative flex flex-col justify-end rounded-xl overflow-hidden border border-slate-200/40 shadow-2xs hover:shadow-xl hover:shadow-slate-350/30 hover:-translate-y-1 transition-all duration-400 cursor-pointer"
                         >
                           {/* Full Image Background */}
-                          <div className="absolute inset-0 z-0">
+                          <div className="absolute inset-0 z-0 ">
                             <img
                               src={tile.image_url}
                               alt={tile.name}
@@ -317,14 +388,11 @@ export default function TilesMarketplace() {
                           </div>
 
                           {/* Bottom Overlay */}
-                          <div className="p-3 space-y-2 w-full z-10 relative">
+                          <div className="p-3 space-y-2 w-full z-10 relative ">
                             <div className="space-y-0.5">
                               <h3 className="font-bold text-sm text-white tracking-tight leading-snug transition-colors duration-300 line-clamp-1">
                                 {tile.name}
                               </h3>
-                              <p className="text-[9px] text-slate-300/80 font-medium leading-snug line-clamp-1">
-                                {tile.description}
-                              </p>
                             </div>
 
                             {/* Specs row */}

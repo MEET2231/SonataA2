@@ -58,6 +58,7 @@ export default function AdminPortal() {
   const [actionSuccess, setActionSuccess] = useState("");
   const [actionError, setActionError] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
+  const [updatingSeriesId, setUpdatingSeriesId] = useState(null);
 
   // Load Admin Data on login
   useEffect(() => {
@@ -268,6 +269,31 @@ export default function AdminPortal() {
       console.error(err);
       setActionError(err.message || "Failed to delete series.");
       setTimeout(() => setActionError(""), 5500);
+    }
+  };
+
+  // Update Series Image
+  const handleUpdateSeriesImage = async (id, file, oldImageUrl) => {
+    if (!file) return;
+
+    setUpdatingSeriesId(id);
+    setActionSuccess("");
+    setActionError("");
+
+    try {
+      const updated = await dataService.updateSeriesImage(id, file, oldImageUrl);
+      
+      // Update local state
+      setSeries(prev => prev.map(s => s.id === id ? { ...s, image_url: updated.image_url } : s));
+      
+      setActionSuccess("Series cover image updated successfully.");
+      setTimeout(() => setActionSuccess(""), 4000);
+    } catch (err) {
+      console.error(err);
+      setActionError(err.message || "Failed to update series cover image.");
+      setTimeout(() => setActionError(""), 5500);
+    } finally {
+      setUpdatingSeriesId(null);
     }
   };
 
@@ -927,18 +953,40 @@ export default function AdminPortal() {
                                   {dimSeries.map((item) => (
                                     <div key={item.id} className="p-2 bg-slate-50 border border-slate-200/50 rounded-lg flex items-center justify-between gap-3">
                                       <div className="flex items-center space-x-2.5 min-w-0">
-                                        <div className="w-10 h-10 rounded overflow-hidden bg-slate-100 relative shrink-0 border border-slate-200/40">
+                                        <div className="w-10 h-10 rounded overflow-hidden bg-slate-100 relative shrink-0 border border-slate-200/40 flex items-center justify-center">
+                                          {updatingSeriesId === item.id && (
+                                            <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10">
+                                              <div className="w-4 h-4 border-2 border-slate-300 border-t-accent rounded-full animate-spin" />
+                                            </div>
+                                          )}
                                           <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
                                         </div>
                                         <span className="font-bold text-primary truncate text-xs">{item.name}</span>
                                       </div>
-                                      <button
-                                        onClick={() => handleDeleteSeries(item.id)}
-                                        className="text-slate-400 hover:text-red-500 p-1.5 rounded transition-colors shrink-0 cursor-pointer"
-                                        title="Delete Series"
-                                      >
-                                        <Trash2 size={13} />
-                                      </button>
+                                      <div className="flex items-center space-x-1 shrink-0">
+                                        <button
+                                          onClick={() => document.getElementById(`edit-series-img-input-${item.id}`).click()}
+                                          className="text-slate-400 hover:text-primary hover:bg-slate-100 p-1.5 rounded transition-all cursor-pointer"
+                                          title="Change Cover Image"
+                                          disabled={updatingSeriesId === item.id}
+                                        >
+                                          <FileUp size={13} />
+                                        </button>
+                                        <input
+                                          type="file"
+                                          id={`edit-series-img-input-${item.id}`}
+                                          accept="image/*"
+                                          onChange={(e) => handleUpdateSeriesImage(item.id, e.target.files[0], item.image_url)}
+                                          className="hidden"
+                                        />
+                                        <button
+                                          onClick={() => handleDeleteSeries(item.id)}
+                                          className="text-slate-400 hover:text-red-500 hover:bg-red-50 p-1.5 rounded transition-all cursor-pointer"
+                                          title="Delete Series"
+                                        >
+                                          <Trash2 size={13} />
+                                        </button>
+                                      </div>
                                     </div>
                                   ))}
                                 </div>
