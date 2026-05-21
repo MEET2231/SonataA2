@@ -103,9 +103,9 @@ export default function TilesMarketplace() {
             >
               {/* Page Header */}
               <div className="text-center space-y-4 max-w-3xl mx-auto">
-                <span className="text-accent font-bold text-xs uppercase tracking-widest bg-rose-50 border border-rose-100 px-3.5 py-1.5 rounded-full inline-block">
+                {/* <span className="text-accent font-bold text-xs uppercase tracking-widest bg-rose-50 border border-rose-100 px-3.5 py-1.5 rounded-full inline-block">
                   Vitrified Architectural Series
-                </span>
+                </span> */}
                 <h1 className="text-4xl md:text-6xl font-black text-primary tracking-tight leading-none">
                   Tiles Curation Marketplace
                 </h1>

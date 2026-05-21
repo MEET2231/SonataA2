@@ -33,10 +33,8 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
-        scrolled
-          ? "py-3 glass-panel shadow-sm"
-          : "py-6 bg-transparent border-b border-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 bg-[#938b7b] transition-all duration-500 ease-out ${
+        scrolled ? "py-3 shadow-sm border-b border-slate-200/60" : "py-6"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -61,10 +59,10 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="relative py-2 text-sm font-medium transition-colors duration-300"
-                style={{ color: isActive ? "var(--color-accent)" : "var(--color-primary-light)" }}
+                className="relative py-2 text-lg font-medium transition-colors duration-300"
+                style={{ color: isActive ? "#f7f3ea" : "var(--color-primary-light)" }}
               >
-                <span className="hover:text-accent transition-colors duration-200">
+                <span className="hover:text-[#f7f3ea] transition-colors duration-200">
                   {link.label}
                 </span>
                 
@@ -72,7 +70,7 @@ export default function Navbar() {
                 {isActive && (
                   <motion.div
                     layoutId="navbar-active-indicator"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#f7f3ea]"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -82,7 +80,7 @@ export default function Navbar() {
           
           <Link
             href="/admin"
-            className="px-4 py-2 text-xs font-semibold text-white bg-primary rounded-lg shadow-sm hover:bg-accent transition-colors duration-300"
+            className="px-4 py-2 text-base font-semibold text-white bg-primary rounded-lg shadow-sm hover:bg-accent transition-colors duration-300"
           >
             Log In
           </Link>
@@ -118,7 +116,7 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`text-base font-semibold py-2 px-3 rounded-lg transition-all ${
+                    className={`text-xl font-semibold py-2 px-3 rounded-lg transition-all ${
                       isActive
                         ? "bg-accent/10 text-accent"
                         : "text-primary hover:bg-slate-100"
@@ -131,7 +129,7 @@ export default function Navbar() {
               <Link
                 href="/admin"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center px-4 py-2.5 font-bold text-white bg-primary rounded-lg shadow-md hover:bg-accent transition-all duration-300"
+                className="w-full text-center px-4 py-2.5 text-lg font-bold text-white bg-primary rounded-lg shadow-md hover:bg-accent transition-all duration-300"
               >
                 Log In
               </Link>

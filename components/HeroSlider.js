@@ -88,7 +88,7 @@ export default function HeroSlider() {
         <div className="max-w-7xl mx-auto px-6 w-full">
           <div className="max-w-2xl text-left space-y-6">
             
-            {/* Animated Subtitle */}
+            {/* Animated Subtitle
             <div className="overflow-hidden">
               <motion.span
                 key={`sub-${current}`}
@@ -99,7 +99,7 @@ export default function HeroSlider() {
               >
                 {slides[current].subtitle}
               </motion.span>
-            </div>
+            </div> */}
 
             {/* Animated Title */}
             <div className="overflow-hidden">
@@ -137,7 +137,7 @@ export default function HeroSlider() {
             >
               <Link
                 href={slides[current].ctaLink}
-                className="inline-flex items-center space-x-2 px-6 py-3.5 bg-accent text-white font-bold rounded-xl shadow-lg hover:bg-accent-light hover:scale-102 hover:shadow-accent/20 active:scale-98 transition-all duration-300 group"
+                className="inline-flex items-center space-x-2 px-6 py-3.5 bg-transparent text-white font-bold rounded-xl border border-white/50 shadow-lg hover:bg-white/10 hover:scale-102 hover:shadow-white/10 active:scale-98 transition-all duration-300 group"
               >
                 <span>{slides[current].ctaText}</span>
                 <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -151,13 +151,13 @@ export default function HeroSlider() {
       {/* Manual Arrow Controls (Desktop only) */}
       <button
         onClick={handlePrev}
-        className="hidden md:flex absolute left-8 top-1/2 -translate-y-1/2 z-20 items-center justify-center w-12 h-12 rounded-full border border-white/20 bg-primary-dark/20 text-white backdrop-blur-sm hover:bg-accent hover:border-accent hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+        className="hidden md:flex absolute left-8 top-1/2 -translate-y-1/2 z-20 items-center justify-center w-12 h-12 rounded-full border border-white/40 bg-transparent text-white backdrop-blur-sm hover:bg-white/10 hover:border-white/70 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
       >
         <ChevronLeft size={24} />
       </button>
       <button
         onClick={handleNext}
-        className="hidden md:flex absolute right-8 top-1/2 -translate-y-1/2 z-20 items-center justify-center w-12 h-12 rounded-full border border-white/20 bg-primary-dark/20 text-white backdrop-blur-sm hover:bg-accent hover:border-accent hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+        className="hidden md:flex absolute right-8 top-1/2 -translate-y-1/2 z-20 items-center justify-center w-12 h-12 rounded-full border border-white/40 bg-transparent text-white backdrop-blur-sm hover:bg-white/10 hover:border-white/70 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
       >
         <ChevronRight size={24} />
       </button>
@@ -168,8 +168,10 @@ export default function HeroSlider() {
           <button
             key={index}
             onClick={() => setCurrent(index)}
-            className={`h-2.5 rounded-full transition-all duration-500 cursor-pointer ${
-              current === index ? "w-8 bg-accent" : "w-2.5 bg-white/40 hover:bg-white/70"
+            className={`h-2.5 rounded-full border border-white/50 transition-all duration-500 cursor-pointer ${
+              current === index
+                ? "w-8 bg-white/15"
+                : "w-2.5 bg-transparent hover:bg-white/10"
             }`}
           />
         ))}

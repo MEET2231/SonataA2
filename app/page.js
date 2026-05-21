@@ -88,7 +88,7 @@ export default function Home() {
           </div>
           <Link
             href="/tiles"
-            className="group inline-flex items-center space-x-2 text-sm font-bold text-accent hover:text-accent-light transition-colors mt-4 md:mt-0"
+            className="group inline-flex items-center space-x-2 text-base font-bold text-slate-500 hover:text-slate-700 transition-colors mt-4 md:mt-0"
           >
             <span>Browse Full Showroom</span>
             <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -193,9 +193,9 @@ export default function Home() {
                   {/* Details Overlay */}
                   <div className="absolute inset-0 z-10 p-10 flex flex-col justify-end text-white text-left space-y-4">
                     <div className="space-y-2">
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-accent-light bg-accent/20 border border-accent/20 px-3 py-1 rounded-full inline-block">
+                      {/* <span className="text-[10px] font-bold uppercase tracking-widest text-accent-light bg-accent/20 border border-accent/20 px-3 py-1 rounded-full inline-block">
                         {categories[activeCategory].tagline}
-                      </span>
+                      </span> */}
                       <h3 className="text-3xl md:text-4xl font-black tracking-tight leading-none">
                         {categories[activeCategory].name}
                       </h3>
@@ -206,7 +206,7 @@ export default function Home() {
                     <div className="pt-2">
                       <Link
                         href={categories[activeCategory].link}
-                        className="inline-flex items-center space-x-2 px-6 py-3 bg-accent hover:bg-accent-light text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 shadow-md group/btn"
+                        className="inline-flex items-center space-x-2 px-6 py-3 bg-gray-500/20 hover:bg-gray-500/30 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 shadow-md group/btn hover:shadow-[0_0_20px_rgba(99,102,241,0.35)] hover:drop-shadow-xl"
                       >
                         <span>View Specifications</span>
                         <ArrowRight size={14} className="transition-transform duration-300 group-hover/btn:translate-x-1" />
