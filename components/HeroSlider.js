@@ -9,19 +9,19 @@ import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 const slides = [
   {
     image: "/images/hero_marble.png",
-    title: "Calacatta Gold Supreme",
+    title: "COLORTON",
     subtitle: "Italian Luxury Redefined",
-    description: "Polished porcelain sweeping with rich warm gold veins, bringing architectural grandeur into modern interiors.",
-    ctaText: "Explore Marble Series",
-    ctaLink: "/tiles?design=Marble"
+    description: "The Colorton Series by Sonata combines bold, fluid stone textures with striking, high-contrast liquid gold veining in a premium 600x1200 mm glossy finish. It effortlessly transforms everyday floors and walls into high-end, multi-dimensional artistic statements.",
+    ctaText: "Explore COLORTON",
+    ctaLink: "/tiles?design=Colorton"
   },
   {
     image: "/images/hero_wooden.png",
-    title: "Nordic Herringbone Oak",
+    title: "ICONIC SERIES",
     subtitle: "Organic Sophistication",
-    description: "High-density porcelain capturing the organic warmth and deep grain of timber with zero wear or maintenance.",
-    ctaText: "Explore Wood Series",
-    ctaLink: "/tiles?design=Wooden"
+    description: "The Iconic Endless Series by Sonata features premium 600x1200 mm glossy vitrified tiles showcasing sophisticated, classic marble textures and delicate veining. Designed with continuous random faces, it creates an expansive, seamless look that brings a timeless sense of bright luxury and open space to any interior.",
+    ctaText: "Explore ICONIC Series",
+    ctaLink: "/tiles?design=Iconic"
   },
   {
     image: "/images/hero_terrace.png",

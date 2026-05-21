@@ -161,7 +161,7 @@ export default function TilesMarketplace() {
                   <AlertTriangle size={48} className="text-accent animate-pulse" />
                   <h3 className="font-extrabold text-xl text-primary">No Series Defined</h3>
                   <p className="text-sm text-slate-500 font-semibold max-w-sm leading-relaxed">
-                    There are no custom series registered for this dimension. Register new series in the Admin panel!
+                    There are no custom series registered for this dimension.
                   </p>
                 </div>
               ) : (
