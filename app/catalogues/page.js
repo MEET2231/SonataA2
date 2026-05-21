@@ -77,9 +77,6 @@ export default function CataloguesPage() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="space-y-3 mb-16 text-left"
         >
-          <span className="text-accent font-bold text-xs uppercase tracking-widest">
-            Design Resource Center
-          </span>
           <h1 className="text-3xl md:text-5xl font-black text-primary tracking-tight leading-none">
             Catalogues Collection
           </h1>
@@ -124,9 +121,6 @@ export default function CataloguesPage() {
                         
                         {/* Title text overlay inside cover */}
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent p-4 flex flex-col justify-end text-white">
-                          <span className="text-[8px] font-bold uppercase tracking-wider text-accent-light bg-accent/20 border border-accent/20 px-1.5 py-0.5 rounded-md inline-block w-max mb-1">
-                            Sonata Edition
-                          </span>
                           <h4 className="font-extrabold text-xs tracking-tight leading-tight">
                             {cat.title}
                           </h4>
@@ -145,10 +139,6 @@ export default function CataloguesPage() {
                   <div className="flex flex-col justify-between h-full space-y-6 text-center sm:text-left">
                     
                     <div className="space-y-3">
-                      <div className="inline-flex items-center space-x-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-400 bg-slate-100 px-2.5 py-1 rounded-md">
-                        <FileText size={10} className="text-accent" />
-                        <span>PDF SPECIFICATION SHEET</span>
-                      </div>
                       <h3 className="font-black text-xl text-primary tracking-tight leading-snug">
                         {cat.title}
                       </h3>
@@ -182,7 +172,7 @@ export default function CataloguesPage() {
                       ) : (
                         <button
                           onClick={() => handleDownload(cat.id, cat.pdf_url, cat.title)}
-                          className="w-full px-5 py-3 bg-primary text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-accent hover:scale-102 hover:shadow-lg active:scale-98 transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-sm group"
+                          className="w-full px-5 py-3 bg-primary text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:opacity-90 hover:shadow-lg active:scale-98 transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-sm group"
                         >
                           <Download size={14} className="transition-transform group-hover:-translate-y-0.5" />
                           <span>Download Collection Catalogue</span>

@@ -424,7 +424,7 @@ export default function AdminPortal() {
               <button
                 type="submit"
                 disabled={isLoggingIn}
-                className="w-full py-3.5 bg-primary text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-accent hover:scale-102 active:scale-98 transition-all flex items-center justify-center space-x-2 shadow-md cursor-pointer"
+                className="w-full py-3.5 bg-primary text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:opacity-90 active:scale-98 transition-all flex items-center justify-center space-x-2 shadow-md cursor-pointer"
               >
                 {isLoggingIn ? (
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -460,7 +460,7 @@ export default function AdminPortal() {
           </div>
           <button
             onClick={handleLogout}
-            className="px-5 py-2.5 bg-slate-900 hover:bg-accent text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-md transition-colors flex items-center space-x-1.5 cursor-pointer shrink-0"
+            className="px-5 py-2.5 bg-slate-900 hover:opacity-90 text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-md transition-all flex items-center space-x-1.5 cursor-pointer shrink-0"
           >
             <LogOut size={13} />
             <span>Terminate Session</span>
@@ -764,7 +764,7 @@ export default function AdminPortal() {
                           <button
                             type="submit"
                             disabled={actionLoading}
-                            className="w-full sm:w-auto px-8 py-3 bg-accent hover:bg-accent-light text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md flex items-center justify-center space-x-1.5 cursor-pointer"
+                            className="w-full sm:w-auto px-8 py-3 bg-accent hover:opacity-90 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md flex items-center justify-center space-x-1.5 cursor-pointer"
                           >
                             {actionLoading ? (
                               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -813,7 +813,7 @@ export default function AdminPortal() {
                               )}
                               <button
                                 onClick={() => handleDeleteTile(item.id, item.image_url)}
-                                className="p-2 text-slate-400 hover:text-accent hover:bg-rose-50 rounded-lg transition-all cursor-pointer shrink-0"
+                                className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all cursor-pointer shrink-0"
                               >
                                 <Trash2 size={16} />
                               </button>
@@ -934,7 +934,7 @@ export default function AdminPortal() {
                                       </div>
                                       <button
                                         onClick={() => handleDeleteSeries(item.id)}
-                                        className="text-slate-400 hover:text-accent p-1.5 rounded transition-colors shrink-0 cursor-pointer"
+                                        className="text-slate-400 hover:text-red-500 p-1.5 rounded transition-colors shrink-0 cursor-pointer"
                                         title="Delete Series"
                                       >
                                         <Trash2 size={13} />
@@ -1130,7 +1130,7 @@ export default function AdminPortal() {
                                     </span>
                                     <button
                                       onClick={() => handleDeleteEnquiry(enq.id)}
-                                      className="p-1.5 text-slate-400 hover:text-accent hover:bg-rose-50 rounded-lg transition-all cursor-pointer"
+                                      className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all cursor-pointer"
                                       title="Delete Enquiry"
                                     >
                                       <Trash2 size={14} />

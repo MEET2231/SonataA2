@@ -4,9 +4,9 @@
   --color-primary: #0f172a; /* Slate 900 */
   --color-primary-light: #1e293b; /* Slate 800 */
   --color-primary-dark: #020617; /* Slate 950 */
-  --color-accent: #e11d48; /* Crimson Red */
-  --color-accent-light: #f43f5e;
-  --color-accent-dark: #be123c;
+  --color-accent: #C4A265;        /* Warm biscuit gold */
+  --color-accent-light: #D4B47A;
+  --color-accent-dark: #A88B52;
   
   --animate-float-slow: float-slow 8s ease-in-out infinite;
   --animate-float-medium: float-medium 6s ease-in-out infinite;

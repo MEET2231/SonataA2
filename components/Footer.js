@@ -29,22 +29,22 @@ export default function Footer() {
             <h4 className="text-white font-bold text-sm uppercase tracking-widest mb-4">Collections</h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <Link href="/tiles?design=Marble" className="hover:text-accent transition-colors duration-200">
+                <Link href="/tiles?design=Marble" className="hover:text-white transition-colors duration-200">
                   Calacatta & Marble Series
                 </Link>
               </li>
               <li>
-                <Link href="/tiles?design=Wooden" className="hover:text-accent transition-colors duration-200">
+                <Link href="/tiles?design=Wooden" className="hover:text-white transition-colors duration-200">
                   Herringbone Wood Planks
                 </Link>
               </li>
               <li>
-                <Link href="/tiles?design=Textured" className="hover:text-accent transition-colors duration-200">
+                <Link href="/tiles?design=Textured" className="hover:text-white transition-colors duration-200">
                   Volcanic Ash & Slate
                 </Link>
               </li>
               <li>
-                <Link href="/tiles?design=Ceramic" className="hover:text-accent transition-colors duration-200">
+                <Link href="/tiles?design=Ceramic" className="hover:text-white transition-colors duration-200">
                   Artisan Glazed Ceramics
                 </Link>
               </li>
@@ -56,27 +56,27 @@ export default function Footer() {
             <h4 className="text-white font-bold text-sm uppercase tracking-widest mb-4">Resources</h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <Link href="/about" className="hover:text-accent transition-colors duration-200">
+                <Link href="/about" className="hover:text-white transition-colors duration-200">
                   About Our Legacy
                 </Link>
               </li>
               <li>
-                <Link href="/catalogues" className="hover:text-accent transition-colors duration-200">
+                <Link href="/catalogues" className="hover:text-white transition-colors duration-200">
                   Download Catalogues
                 </Link>
               </li>
               <li>
-                <Link href="/tiles" className="hover:text-accent transition-colors duration-200">
+                <Link href="/tiles" className="hover:text-white transition-colors duration-200">
                   Tiles Showroom
                 </Link>
               </li>
               <li>
-                <Link href="/admin" className="hover:text-accent transition-colors duration-200">
+                <Link href="/admin" className="hover:text-white transition-colors duration-200">
                   Admin Dashboard
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-accent transition-colors duration-200">
+                <Link href="/contact" className="hover:text-white transition-colors duration-200">
                   B2B Inquiries
                 </Link>
               </li>

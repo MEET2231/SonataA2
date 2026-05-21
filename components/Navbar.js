@@ -80,7 +80,7 @@ export default function Navbar() {
           
           <Link
             href="/admin"
-            className="px-4 py-2 text-base font-semibold text-white bg-primary rounded-lg shadow-sm hover:bg-accent transition-colors duration-300"
+            className="px-4 py-2 text-base font-semibold text-white bg-primary rounded-lg shadow-sm hover:opacity-85 transition-all duration-300"
           >
             Log In
           </Link>
@@ -88,7 +88,7 @@ export default function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden p-2 text-primary hover:text-accent focus:outline-none transition-colors"
+          className="md:hidden p-2 text-primary hover:opacity-70 focus:outline-none transition-all"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -129,7 +129,7 @@ export default function Navbar() {
               <Link
                 href="/admin"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center px-4 py-2.5 text-lg font-bold text-white bg-primary rounded-lg shadow-md hover:bg-accent transition-all duration-300"
+                className="w-full text-center px-4 py-2.5 text-lg font-bold text-white bg-primary rounded-lg shadow-md hover:opacity-85 transition-all duration-300"
               >
                 Log In
               </Link>

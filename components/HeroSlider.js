@@ -8,28 +8,36 @@ import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 
 const slides = [
   {
-    image: "/images/hero_marble.png",
+    image: "/images/hero_COLORTON.png",
     title: "COLORTON",
     subtitle: "Italian Luxury Redefined",
     description: "The Colorton Series by Sonata combines bold, fluid stone textures with striking, high-contrast liquid gold veining in a premium 600x1200 mm glossy finish. It effortlessly transforms everyday floors and walls into high-end, multi-dimensional artistic statements.",
-    ctaText: "Explore COLORTON",
+    ctaText: "Explore More",
     ctaLink: "/tiles?design=Colorton"
   },
   {
-    image: "/images/hero_wooden.png",
+    image: "/images/hero_ICONIC.jpeg",
     title: "ICONIC SERIES",
     subtitle: "Organic Sophistication",
     description: "The Iconic Endless Series by Sonata features premium 600x1200 mm glossy vitrified tiles showcasing sophisticated, classic marble textures and delicate veining. Designed with continuous random faces, it creates an expansive, seamless look that brings a timeless sense of bright luxury and open space to any interior.",
-    ctaText: "Explore ICONIC Series",
+    ctaText: "Explore More",
     ctaLink: "/tiles?design=Iconic"
   },
   {
-    image: "/images/hero_terrace.png",
-    title: "Volcanic Ash Slate",
+    image: "/images/hero_ROCKER.jpeg",
+    title: "ROCKER",
     subtitle: "Bold Natural Durability",
-    description: "Earthy, R11 non-slip dark stone textures crafted specifically for swimming pool terraces and outdoor pathways.",
-    ctaText: "Explore Outdoor Series",
-    ctaLink: "/tiles?location=Outdoor"
+    description: "The Rocker Series by Sonata offers premium glossy vitrified tiles that combine bold, dynamic stone textures with the durability of high-quality ceramic. With its striking patterns and robust construction, Rocker is designed to make a powerful statement while standing up to the demands of everyday living.",
+    ctaText: "Explore More",
+    ctaLink: "/tiles?design=Rocker"
+  },
+  {
+    image: "/images/hero_CRYSTAL.jpeg",
+    title: "CRYSTAL",
+    subtitle: "Elegant Simplicity",
+    description: "The Crysta Series by Sonata features premium 600x1200 mm glossy vitrified tiles with a clean, minimalist design. Its subtle textures and refined finish create a sophisticated look that complements any modern interior.",
+    ctaText: "Explore More",
+    ctaLink: "/tiles?design=Crystal"
   }
 ];
 

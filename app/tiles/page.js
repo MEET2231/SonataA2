@@ -138,7 +138,7 @@ export default function TilesMarketplace() {
                         {isSelected && (
                           <motion.div
                             layoutId="active-dimension-pill"
-                            className="absolute inset-0 border-2 border-accent rounded-xl pointer-events-none"
+                            className="absolute inset-0 border-2 border-black rounded-xl pointer-events-none"
                             transition={{ type: "spring", stiffness: 300, damping: 25 }}
                           />
                         )}
@@ -151,14 +151,14 @@ export default function TilesMarketplace() {
               {/* Series Listing Grid */}
               {loading ? (
                 <div className="flex flex-col items-center justify-center py-36 space-y-4">
-                  <div className="w-10 h-10 border-4 border-slate-200 border-t-accent rounded-full animate-spin" />
+                  <div className="w-10 h-10 border-4 border-slate-200 border-t-black rounded-full animate-spin" />
                   <span className="text-sm text-slate-400 font-bold tracking-widest uppercase animate-pulse">
                     Refining Material Series...
                   </span>
                 </div>
               ) : currentSeriesList.length === 0 ? (
                 <div className="glass-panel p-20 rounded-3xl flex flex-col items-center justify-center text-center space-y-4 shadow-xs max-w-2xl mx-auto border border-slate-200/50">
-                  <AlertTriangle size={48} className="text-accent animate-pulse" />
+                  <AlertTriangle size={48} className="text-black animate-pulse" />
                   <h3 className="font-extrabold text-xl text-primary">No Series Defined</h3>
                   <p className="text-sm text-slate-500 font-semibold max-w-sm leading-relaxed">
                     There are no custom series registered for this dimension.
@@ -191,30 +191,30 @@ export default function TilesMarketplace() {
                         </div>
 
                         {/* Top Technical Dimension Tag */}
-                        <div className="absolute top-6 left-6 z-20">
+                        {/* <div className="absolute top-6 left-6 z-20">
                           <span className="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-xs">
                             {selectedDim === "600x600" ? "600x600 MM Slabs" : selectedDim === "600x1200" ? "600x1200 MM Panels" : "195x1200 MM Wood Planks"}
                           </span>
-                        </div>
+                        </div> */}
 
                         {/* Bottom Info Content */}
                         <div className="relative p-8 space-y-4 z-20">
                           <div className="space-y-1">
-                            <h3 className="font-black text-2xl md:text-3xl text-white tracking-tight leading-tight group-hover:text-accent-light transition-colors duration-300">
+                            <h3 className="font-black text-2xl md:text-3xl text-white tracking-tight leading-tight transition-colors duration-300">
                               {ser.name}
                             </h3>
                             <p className="text-slate-300 text-xs font-medium uppercase tracking-wider flex items-center space-x-1.5">
-                              <Sparkles size={12} className="text-amber-400" />
+                              {/* <Sparkles size={12} className="text-amber-400" /> */}
                               <span>{finishTypes.join(" / ") || "Premium Finishes"}</span>
                             </p>
                           </div>
 
                           <div className="flex items-center justify-between pt-4 border-t border-white/15">
-                            <span className="text-[10px] font-extrabold tracking-widest uppercase text-accent-light bg-accent/25 border border-accent/20 px-3 py-1 rounded-md">
+                            <span className="text-[10px] font-extrabold tracking-widest uppercase text-white  bg-transparent border border-accent/20 px-3 py-1 rounded-md">
                               {seriesTiles.length === 1 ? "1 Design Available" : `${seriesTiles.length} Designs Available`}
                             </span>
                             
-                            <span className="text-xs font-black text-white group-hover:text-accent-light transition-colors flex items-center space-x-1 cursor-pointer">
+                            <span className="text-xs font-black text-white/80 hover:text-white transition-colors flex items-center space-x-1 cursor-pointer">
                               <span>Explore Curation</span>
                               <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                             </span>
@@ -242,9 +242,9 @@ export default function TilesMarketplace() {
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <button
                   onClick={() => setSelectedSeries(null)}
-                  className="inline-flex items-center space-x-2.5 text-slate-600 hover:text-accent font-extrabold text-xs uppercase tracking-widest bg-white hover:bg-slate-50 border border-slate-200/60 shadow-xs px-5 py-3 rounded-full transition-all duration-300 cursor-pointer group w-fit"
+                  className="inline-flex items-center space-x-2.5 text-slate-600 hover:text-slate-900 font-extrabold text-xs uppercase tracking-widest bg-white hover:bg-slate-50 border border-slate-200/60 shadow-xs px-5 py-3 rounded-full transition-all duration-300 cursor-pointer group w-fit"
                 >
-                  <ChevronLeft size={16} className="transition-transform group-hover:-translate-x-1 text-slate-500 group-hover:text-accent" />
+                  <ChevronLeft size={16} className="transition-transform group-hover:-translate-x-1 text-slate-500" />
                   <span>Back to Series Curation</span>
                 </button>
 
@@ -276,7 +276,7 @@ export default function TilesMarketplace() {
                   </p>
                   <button
                     onClick={() => setSelectedSeries(null)}
-                    className="px-6 py-3 bg-accent hover:bg-accent-dark text-white rounded-xl text-xs font-extrabold tracking-widest transition-all shadow-md cursor-pointer"
+                    className="px-6 py-3 bg-accent hover:opacity-90 text-white rounded-xl text-xs font-extrabold tracking-widest transition-all shadow-md cursor-pointer"
                   >
                     Return to Catalog
                   </button>
@@ -319,7 +319,7 @@ export default function TilesMarketplace() {
                           {/* Bottom Overlay */}
                           <div className="p-3 space-y-2 w-full z-10 relative">
                             <div className="space-y-0.5">
-                              <h3 className="font-bold text-sm text-white tracking-tight leading-snug group-hover:text-accent-light transition-colors duration-300 line-clamp-1">
+                              <h3 className="font-bold text-sm text-white tracking-tight leading-snug transition-colors duration-300 line-clamp-1">
                                 {tile.name}
                               </h3>
                               <p className="text-[9px] text-slate-300/80 font-medium leading-snug line-clamp-1">
@@ -340,7 +340,7 @@ export default function TilesMarketplace() {
                             <div className={`grid gap-2 shrink-0 ${tile.external_link ? 'grid-cols-2' : 'grid-cols-1'}`}>
                               <Link
                                 href={`/tiles/${tile.id}`}
-                                className="py-2 bg-white/15 hover:bg-accent backdrop-blur-md border border-white/15 text-white font-extrabold text-[8px] uppercase tracking-widest rounded-lg transition-all duration-300 shadow-2xs hover:shadow-md flex items-center justify-center space-x-1 text-center cursor-pointer"
+                                className="py-2 bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/15 text-white font-extrabold text-[8px] uppercase tracking-widest rounded-lg transition-all duration-300 shadow-2xs hover:shadow-md flex items-center justify-center space-x-1 text-center cursor-pointer"
                               >
                                 <Eye size={10} />
                                 <span>Inspect</span>
@@ -350,7 +350,7 @@ export default function TilesMarketplace() {
                                   href={tile.external_link}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="py-2 bg-white/15 hover:bg-accent backdrop-blur-md border border-white/15 text-white font-extrabold text-[8px] uppercase tracking-widest rounded-lg transition-all duration-300 shadow-2xs hover:shadow-md flex items-center justify-center space-x-1 text-center cursor-pointer"
+                                  className="py-2 bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/15 text-white font-extrabold text-[8px] uppercase tracking-widest rounded-lg transition-all duration-300 shadow-2xs hover:shadow-md flex items-center justify-center space-x-1 text-center cursor-pointer"
                                 >
                                   <ExternalLink size={10} />
                                   <span>3D</span>
@@ -375,7 +375,7 @@ export default function TilesMarketplace() {
                           className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-300 shadow-2xs select-none ${
                             currentPage === 1
                               ? "bg-slate-50 border-slate-200 text-slate-300 cursor-not-allowed"
-                              : "bg-white border-slate-200 text-slate-505 hover:text-accent hover:border-accent hover:scale-105 active:scale-95 cursor-pointer"
+                              : "bg-white border-slate-200 text-slate-505 hover:border-slate-400 hover:scale-105 active:scale-95 cursor-pointer"
                           }`}
                         >
                           <ChevronLeft size={16} />
@@ -407,7 +407,7 @@ export default function TilesMarketplace() {
                           className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all duration-300 shadow-2xs select-none ${
                             currentPage === totalPages
                               ? "bg-slate-50 border-slate-200 text-slate-300 cursor-not-allowed"
-                              : "bg-white border-slate-200 text-slate-505 hover:text-accent hover:border-accent hover:scale-105 active:scale-95 cursor-pointer"
+                              : "bg-white border-slate-200 text-slate-505 hover:border-slate-400 hover:scale-105 active:scale-95 cursor-pointer"
                           }`}
                         >
                           <ChevronRight size={16} />

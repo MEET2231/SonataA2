@@ -11,35 +11,37 @@ import {
   BookOpen, 
   Layers, 
   Award, 
-  ShieldCheck 
+  ShieldCheck,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 
 const categories = [
   {
-    name: "Luxury Marble",
-    tagline: "Opulence & Sophistication",
-    image: "/images/hero_marble.png",
+    name: "PUNCH",
+    tagline: "Finess that delights",
+    image: "/images/CAT_PUNCH.jpeg",
     link: "/tiles",
     color: "from-blue-900/60 to-slate-900/90"
   },
   {
-    name: "Architectural Wood",
-    tagline: "Natural Warmth Plank",
-    image: "/images/hero_wooden.png",
+    name: "CRYSTAL",
+    tagline: "Shines like a gem",
+    image: "/images/CAT_CRYSTAL.jpeg",
     link: "/tiles",
     color: "from-amber-900/60 to-slate-900/90"
   },
   {
-    name: "Textured Slate",
-    tagline: "Structured Outdoor R11",
-    image: "/images/hero_terrace.png",
+    name: "ICONIC",
+    tagline: "Timeless Icon of Design",
+    image: "/images/CAT_ICONIC.jpeg",
     link: "/tiles",
     color: "from-slate-800/60 to-slate-900/90"
   },
   {
-    name: "Artisan Ceramic",
+    name: "ROCKER",
     tagline: "Handcrafted Pigment Gloss",
-    image: "https://images.unsplash.com/photo-1501183007986-d0d080b147f9?auto=format&fit=crop&w=800&q=80",
+    image: "/images/CAT_ROCKER.jpeg",
     link: "/tiles",
     color: "from-emerald-900/60 to-slate-900/90"
   }
@@ -76,9 +78,9 @@ export default function Home() {
           className="flex flex-col md:flex-row items-end justify-between mb-16"
         >
           <div className="max-w-xl space-y-4">
-            <span className="text-accent font-bold text-xs uppercase tracking-widest">
+            {/* <span className="text-accent font-bold text-xs uppercase tracking-widest">
               Showroom Curations
-            </span>
+            </span> */}
             <h2 className="text-3xl md:text-5xl font-black text-primary tracking-tight leading-none">
               Explore by Core Design Style
             </h2>
@@ -99,60 +101,37 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Column: Interactive Categories Buttons list (Col-span 5) */}
-          <div className="lg:col-span-5 space-y-4 text-left">
-            <div className="flex flex-col space-y-3">
-              {categories.map((cat, idx) => {
-                const isActive = activeCategory === idx;
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => setActiveCategory(idx)}
-                    className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 flex items-start space-x-4 cursor-pointer group ${
-                      isActive 
-                        ? "bg-white border-slate-200 shadow-md scale-[1.02]" 
-                        : "bg-transparent border-transparent hover:bg-slate-100/50"
-                    }`}
-                  >
-                    {/* Bullet indicator */}
-                    <span className={`font-mono text-xs font-bold leading-none mt-1 transition-colors ${
-                      isActive ? "text-accent" : "text-slate-400 group-hover:text-slate-600"
-                    }`}>
-                      0{idx + 1}
-                    </span>
-
-                    {/* Meta info */}
-                    <div className="space-y-1 flex-grow">
-                      <h4 className={`font-extrabold text-base tracking-tight leading-none transition-colors ${
-                        isActive ? "text-primary animate-pulse" : "text-slate-400 group-hover:text-slate-600"
-                      }`}>
-                        {cat.name}
-                      </h4>
-                      {isActive && (
-                        <motion.p
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          className="text-xs text-slate-500 font-medium leading-relaxed font-sans mt-2"
-                        >
-                          {cat.tagline}. High-fidelity glazed vitrified slabs capturing deep mineral details with pristine clarity.
-                        </motion.p>
-                      )}
-                    </div>
-
-                    {/* Arrow active mark */}
-                    {isActive && (
-                      <motion.div
-                        layoutId="active-curation-indicator"
-                        className="text-accent"
-                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                      >
-                        <ArrowRight size={16} />
-                      </motion.div>
-                    )}
-                  </button>
-                );
-              })}
+          <div className="lg:col-span-5 overflow-hidden">
+  <div className="flex items-center space-x-4">
+    <button
+      onClick={() => setActiveCategory(Math.max(activeCategory - 1, 0))}
+      disabled={activeCategory === 0}
+      className="p-2 text-primary hover:opacity-80 disabled:opacity-30"
+    >
+      <ChevronLeft size={24} />
+    </button>
+    <div className="grid flex-1 grid-cols-3 gap-4">
+        {[0,1,2].map(i => {
+          const idx = (activeCategory + i) % categories.length;
+          const cat = categories[idx];
+          return (
+            <div key={cat.name} className="relative rounded-xl overflow-hidden border border-slate-200/30">
+              <img src={cat.image} alt={cat.name} className="w-full h-32 object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+              <div className="absolute bottom-2 left-2 text-white text-sm font-medium">{cat.name}</div>
             </div>
-          </div>
+          );
+        })}
+      </div>
+    <button
+      onClick={() => setActiveCategory(Math.min(activeCategory + 1, categories.length - 3))}
+      disabled={activeCategory + 3 >= categories.length}
+      className="p-2 text-primary hover:opacity-80 disabled:opacity-30"
+    >
+      <ChevronRight size={24} />
+    </button>
+  </div>
+</div>
 
           {/* Right Column: Dynamic Slider Showcase Card with zoom effect (Col-span 7) */}
           <div className="lg:col-span-7 flex justify-center items-center">
@@ -217,12 +196,6 @@ export default function Home() {
               </AnimatePresence>
 
               {/* Architectural Layout Ticks */}
-              <div className="absolute top-6 left-6 text-[8px] font-mono text-white/40 tracking-wider">
-                SONATA SPEC STATION // CYCLE 0{activeCategory + 1}
-              </div>
-              <div className="absolute bottom-6 right-6 text-[8px] font-mono text-white/40 tracking-wider">
-                AUTO ROTATING // ACTIVE
-              </div>
             </div>
           </div>
 
@@ -253,7 +226,7 @@ export default function Home() {
                 
                 {/* Overlay Badge */}
                 <div className="absolute bottom-6 left-6 glass-panel py-3 px-5 rounded-xl border border-white/40 shadow-lg flex items-center space-x-3">
-                  <span className="text-3xl font-black text-accent font-mono leading-none">25</span>
+                  <span className="text-3xl font-black text-black font-mono leading-none">25</span>
                   <div className="text-[10px] font-bold text-primary uppercase tracking-wider leading-tight">
                     Years of<br />Experience
                   </div>
@@ -264,9 +237,6 @@ export default function Home() {
             {/* Right Column: Narrative Content */}
             <div className="lg:col-span-6 space-y-6 text-left">
               <div className="space-y-3">
-                <span className="text-accent font-bold text-xs uppercase tracking-widest block">
-                  Corporate Legacy
-                </span>
                 <h2 className="text-3xl md:text-4xl font-black text-primary tracking-tight leading-tight">
                   25 Years of Experience
                 </h2>
@@ -283,7 +253,7 @@ export default function Home() {
               <div className="pt-2">
                 <Link
                   href="/about"
-                  className="group inline-flex items-center space-x-2 px-5 py-3 bg-primary hover:bg-accent text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all duration-300"
+                  className="group inline-flex items-center space-x-2 px-5 py-3 bg-transparent hover:bg-primary/5 text-primary font-bold text-xs uppercase tracking-wider rounded-xl border border-primary/30 hover:border-primary/60 transition-all duration-300"
                 >
                   <span>Know More</span>
                   <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -307,11 +277,8 @@ export default function Home() {
           >
             {/* Visual Box */}
             <div className="lg:col-span-5 relative group">
-              <div className="absolute inset-0 bg-accent/10 rounded-3xl blur-2xl group-hover:bg-accent/15 transition-colors duration-500 pointer-events-none" />
+              <div className="absolute inset-0 bg-accent/10 rounded-3xl blur-2xl transition-colors duration-500 pointer-events-none" />
               <div className="relative glass-panel p-8 rounded-3xl border border-slate-200/60 shadow-xl space-y-6 overflow-hidden">
-                <span className="text-[10px] font-bold text-accent uppercase tracking-widest bg-accent/10 px-2.5 py-1 rounded-full inline-block">
-                  First Floor Tiles Unit in Himatnagar
-                </span>
                 <div className="space-y-2">
                   <h3 className="text-3xl font-black text-primary tracking-tight">Since 2002</h3>
                   <p className="text-sm text-slate-500 font-medium leading-relaxed font-sans">
@@ -327,9 +294,6 @@ export default function Home() {
 
             {/* Narrative & CTA */}
             <div className="lg:col-span-7 space-y-6 text-left">
-              <span className="text-accent font-bold text-xs uppercase tracking-widest">
-                Our Pioneering Legacy
-              </span>
               <h2 className="text-3xl md:text-5xl font-black text-primary tracking-tight leading-none">
                 Blending Timeless Craft with Advanced Vitrification
               </h2>
@@ -339,7 +303,7 @@ export default function Home() {
               <div className="pt-2">
                 <Link
                   href="/about"
-                  className="group inline-flex items-center space-x-3 px-6 py-3.5 bg-primary hover:bg-accent text-white font-bold rounded-xl shadow-lg active:scale-98 transition-all duration-300"
+                  className="group inline-flex items-center space-x-3 px-6 py-3.5 bg-transparent hover:bg-primary/5 text-primary font-bold rounded-xl border border-primary/30 hover:border-primary/60 active:scale-98 transition-all duration-300"
                 >
                   <span>Explore Our Full Story</span>
                   <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -360,12 +324,6 @@ export default function Home() {
         
         {/* Fine Architectural layout specs, dimension lines and framing borders */}
         <div className="absolute inset-x-6 top-6 bottom-6 border border-white/5 rounded-2xl pointer-events-none">
-          <div className="absolute top-4 left-4 text-[7px] font-mono text-slate-500 uppercase tracking-widest">
-            Sonata B2B Spec Terminal // V2.26
-          </div>
-          <div className="absolute bottom-4 right-4 text-[7px] font-mono text-slate-500 uppercase tracking-widest">
-            CAD/BIM Asset Distribution Node
-          </div>
           {/* Symmetrical Ticks */}
           <div className="absolute top-0 left-1/4 -translate-y-1/2 text-[9px] font-mono text-slate-600">+</div>
           <div className="absolute top-0 right-1/4 -translate-y-1/2 text-[9px] font-mono text-slate-600">+</div>
@@ -384,16 +342,11 @@ export default function Home() {
             {/* Left Column: Clean, Elegant B2B Description */}
             <div className="lg:col-span-7 space-y-8 text-left">
               <div className="space-y-4">
-                <div className="inline-flex items-center space-x-2 bg-white/5 border border-white/10 px-3 py-1 rounded-full">
-                  <span className="text-accent font-bold text-[10px] uppercase tracking-widest">
-                    Design Architecture Libraries
-                  </span>
-                </div>
                 <h2 className="text-3xl md:text-5xl font-black tracking-tight leading-tight">
                   Premium B2B Product Catalogues
                 </h2>
                 <p className="text-slate-400 text-base font-medium leading-relaxed max-w-xl font-sans">
-                  Gain access to high-fidelity CAD reference files, full-spectrum architectural manuals, and collection cover stories. Fast download speeds guaranteed.
+                  Gain access to high-fidelity reference files, full-spectrum architectural manuals, and collection cover stories. Fast download speeds guaranteed.
                 </p>
               </div>
 
@@ -401,7 +354,7 @@ export default function Home() {
               <div className="pt-2 flex flex-col sm:flex-row items-center gap-6">
                 <Link
                   href="/catalogues"
-                  className="w-full sm:w-auto px-8 py-4 bg-accent hover:bg-accent-light text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg hover:scale-102 hover:shadow-accent/20 active:scale-98 transition-all duration-300 inline-flex items-center justify-center space-x-3 group"
+                    className="w-full sm:w-auto px-8 py-4 bg-white/10 backdrop-blur-md border border-white/15 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg hover:bg-white/15 active:scale-98 transition-all duration-300 inline-flex items-center justify-center space-x-3 group"
                 >
                   <BookOpen size={16} className="transition-transform group-hover:rotate-12" />
                   <span>Enter Download Center</span>

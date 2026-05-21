@@ -40,22 +40,22 @@ export default function AboutPage() {
 
   const highlights = [
     {
-      icon: <Flame className="w-6 h-6 text-accent" />,
+      icon: <Flame className="w-6 h-6 text-black" />,
       title: "High-Temperature Vitrification",
       desc: "Fired at temperatures exceeding 1200°C for exceptional density, guaranteeing liquid absorption rates strictly below 0.5%."
     },
     {
-      icon: <Award className="w-6 h-6 text-accent" />,
+      icon: <Award className="w-6 h-6 text-black" />,
       title: "ISO-9001 Precision Standards",
       desc: "Adhering to strict international grading criteria, assuring perfect flatness, micro-calibrated thickness, and rectified square edges."
     },
     {
-      icon: <Recycle className="w-6 h-6 text-accent" />,
+      icon: <Recycle className="w-6 h-6 text-black" />,
       title: "Sustainable Manufacturing",
       desc: "Employing energy-efficient gas kilns, recycled process water loops, and zero-waste raw material optimization cycles."
     },
     {
-      icon: <ShieldCheck className="w-6 h-6 text-accent" />,
+      icon: <ShieldCheck className="w-6 h-6 text-black" />,
       title: "B2B Professional Freight",
       desc: "Delivering double-reinforced wooden crates directly to construction sites worldwide with break-resistant guarantees."
     }
@@ -123,7 +123,7 @@ export default function AboutPage() {
               transition={{ duration: 0.5, delay: idx * 0.1 }}
               className="glass-panel p-8 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-slate-100/80 flex items-center justify-center mb-6 group-hover:bg-accent/10 transition-colors duration-300">
+              <div className="w-12 h-12 rounded-xl bg-slate-100/80 flex items-center justify-center mb-6 group-hover:bg-slate-200/80 transition-colors duration-300">
                 {item.icon}
               </div>
               <h3 className="font-extrabold text-lg text-primary mb-3 tracking-tight">
@@ -161,7 +161,7 @@ export default function AboutPage() {
                 
                 {/* Overlay Badge */}
                 <div className="absolute bottom-6 left-6 glass-panel py-3 px-5 rounded-xl border border-white/40 shadow-lg flex items-center space-x-3">
-                  <span className="text-3xl font-black text-accent font-mono leading-none">25</span>
+                  <span className="text-3xl font-black text-black font-mono leading-none">25</span>
                   <div className="text-[10px] font-bold text-primary uppercase tracking-wider leading-tight">
                     Years of<br />Experience
                   </div>
@@ -172,9 +172,6 @@ export default function AboutPage() {
             {/* Right Column: Narrative Narrative Content */}
             <div className="lg:col-span-6 space-y-6 text-left">
               <div className="space-y-3">
-                <span className="text-accent font-bold text-xs uppercase tracking-widest block">
-                  Corporate Legacy
-                </span>
                 <h2 className="text-3xl md:text-4xl font-black text-primary tracking-tight leading-tight">
                   25 Years of Experience
                 </h2>
@@ -191,7 +188,7 @@ export default function AboutPage() {
               <div className="pt-2">
                 <Link
                   href="/tiles"
-                  className="group inline-flex items-center space-x-2 px-5 py-3 bg-primary hover:bg-accent text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all duration-300"
+                  className="group inline-flex items-center space-x-2 px-5 py-3 bg-transparent hover:bg-primary/5 text-primary font-bold text-xs uppercase tracking-wider rounded-xl border border-primary/30 hover:border-primary/60 transition-all duration-300"
                 >
                   <span>Know More</span>
                   <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -214,8 +211,8 @@ export default function AboutPage() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-4 space-y-6 lg:sticky lg:top-28"
           >
-            <span className="text-accent font-bold text-xs uppercase tracking-widest">
-              Brand Journey
+            <span className="text-black font-bold text-xs uppercase tracking-widest">
+              Brand Journey 
             </span>
             <h2 className="text-3xl md:text-4xl font-black text-primary tracking-tight leading-none">
               Over Two Decades of Ceramic Inception
@@ -225,7 +222,7 @@ export default function AboutPage() {
             </p>
             <div className="p-6 rounded-2xl bg-primary text-white space-y-4 shadow-xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-2xl pointer-events-none" />
-              <div className="flex items-center space-x-2 text-accent font-bold text-xs uppercase tracking-wider">
+              <div className="flex items-center space-x-2 text-white font-bold text-xs uppercase tracking-wider">
                 <Factory size={16} />
                 <span>Himatnagar Factory Hub</span>
               </div>
@@ -247,7 +244,7 @@ export default function AboutPage() {
                 className="relative pl-8 group"
               >
                 {/* Timeline dot */}
-                <div className="absolute -left-[21px] top-1.5 w-3 h-3 rounded-full bg-slate-300 border-2 border-white group-hover:bg-accent transition-colors duration-300" />
+                <div className="absolute -left-[21px] top-1.5 w-3 h-3 rounded-full bg-slate-300 border-2 border-white group-hover:bg-slate-500 transition-colors duration-300" />
                 
                 <div className="space-y-2">
                   <div className="flex items-baseline space-x-3">
@@ -273,7 +270,7 @@ export default function AboutPage() {
       <section className="bg-slate-50/60 py-24 border-y border-slate-200/50 relative">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="max-w-xl space-y-4 mb-16">
-            <span className="text-accent font-bold text-xs uppercase tracking-widest block">
+            <span className="text-black font-bold text-xs uppercase tracking-widest block">
               Standard Dimensions
             </span>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-primary leading-tight">
@@ -360,12 +357,9 @@ export default function AboutPage() {
           className="glass-panel p-12 md:p-16 rounded-3xl border border-slate-200/60 shadow-xl space-y-8 relative overflow-hidden text-center"
         >
           {/* Elegant top accent indicator line using the brand accent color strictly as a highlight */}
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent/20 via-accent to-accent/20" />
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent/20 via-black to-accent/20" />
           
           <div className="max-w-2xl mx-auto space-y-4">
-            <span className="text-accent font-bold text-xs uppercase tracking-widest block">
-              B2B Corporate Relations
-            </span>
             <h2 className="text-3xl md:text-4xl font-black text-primary tracking-tight leading-tight">
               Ready to Partner on Your Next Development?
             </h2>

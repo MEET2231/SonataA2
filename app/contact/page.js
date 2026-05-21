@@ -112,9 +112,6 @@ export default function ContactPage() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="space-y-3 mb-16 text-left"
         >
-          <span className="text-accent font-bold text-xs uppercase tracking-widest">
-            B2B Commercial Desk
-          </span>
           <h1 className="text-3xl md:text-5xl font-black text-primary tracking-tight leading-none">
             Contact Us
           </h1>
@@ -136,7 +133,7 @@ export default function ContactPage() {
             <div className="glass-panel p-8 rounded-2xl border border-slate-200/50 shadow-sm space-y-6">
               
               <div className="space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-accent">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-black">
                   Global Headquarters
                 </span>
                 <h3 className="font-extrabold text-xl text-primary leading-none">
@@ -351,7 +348,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 bg-accent text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-accent-light hover:shadow-lg hover:scale-101 active:scale-99 transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-md"
+                    className="w-full py-4 bg-black text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:opacity-90 hover:shadow-lg active:scale-99 transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-md"
                   >
                     {isSubmitting ? (
                       <>
