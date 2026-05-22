@@ -491,22 +491,6 @@ export default function AboutPage() {
               Explore Showroom
             </Link>
           </div>
-
-          {/* Minimal specs strip */}
-          <div className="pt-8 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            <div className="flex flex-col items-center space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Fast Dispatch</span>
-              <span className="text-xs font-semibold text-slate-700 font-sans">Samples ship within 48 hours</span>
-            </div>
-            <div className="flex flex-col items-center space-y-1 border-y sm:border-y-0 sm:border-x border-slate-100 py-3 sm:py-0">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Asset Library</span>
-              <span className="text-xs font-semibold text-slate-700 font-sans">High-fidelity CAD & BIM files</span>
-            </div>
-            <div className="flex flex-col items-center space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Direct Shipping</span>
-              <span className="text-xs font-semibold text-slate-700 font-sans">Sabarkantha logistics hub</span>
-            </div>
-          </div>
         </motion.div>
       </section>
     </main>
