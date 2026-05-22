@@ -81,6 +81,23 @@ export default function ContactPage() {
         message: form.message
       });
 
+      // Asynchronously send email notification via server API
+      try {
+        fetch("/api/send-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_name: form.name,
+            user_email: form.email,
+            user_phone: form.phone,
+            tile_name: `General Inquiry: ${form.subject}`,
+            message: form.message
+          })
+        }).catch(err => console.error("Email notification dispatch error:", err));
+      } catch (emailErr) {
+        console.error("Email notification dispatch failed:", emailErr);
+      }
+
       setSuccess(true);
       setForm({
         name: "",
@@ -368,8 +385,30 @@ export default function ContactPage() {
 
             </div>
           </motion.div>
-
         </div>
+
+        {/* Interactive Google Map Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-16 rounded-3xl overflow-hidden border border-slate-200/50 shadow-md bg-white p-4"
+        >
+          <div className="w-full h-[400px] rounded-2xl overflow-hidden relative">
+            <iframe
+              src="https://maps.google.com/maps?q=Sonata%20Ceramica%20Pvt.%20Ltd,%20Gadhoda,%20Himatnagar,%20Gujarat%20383001&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Sonata Ceramica Pvt. Ltd. Location Map"
+              className="w-full h-full"
+            />
+          </div>
+        </motion.div>
 
       </div>
 

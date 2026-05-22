@@ -1,19 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { dataService } from "@/lib/dataService";
 import BackgroundShapes from "@/components/BackgroundShapes";
 import { Eye, AlertTriangle, ArrowRight, Sparkles, ExternalLink, ChevronLeft, ChevronRight, LayoutGrid } from "lucide-react";
+import TilesHero from "@/components/TilesHero";
+import SeriesCard from "@/components/SeriesCard";
+import TileCard from "@/components/TileCard";
 
 const ITEMS_PER_PAGE = 24;
 const SERIES_PER_PAGE = 9;
 
-export default function TilesMarketplace() {
+function TilesMarketplaceContent() {
   const [tiles, setTiles] = useState([]);
   const [series, setSeries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
   // States
   const [selectedDim, setSelectedDim] = useState("600x1200"); // 600x600, 600x1200, 195x1200
@@ -21,7 +26,12 @@ export default function TilesMarketplace() {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentSeriesPage, setCurrentSeriesPage] = useState(1);
 
+  const searchParams = useSearchParams();
+  const urlDim = searchParams.get("dim");
+  const urlSeries = searchParams.get("series");
+
   useEffect(() => {
+    setIsMounted(true);
     async function loadData() {
       try {
         const tilesData = await dataService.getTiles();
@@ -37,6 +47,17 @@ export default function TilesMarketplace() {
     }
     loadData();
   }, []);
+
+  useEffect(() => {
+    if (urlDim) {
+      setSelectedDim(urlDim);
+    }
+    if (urlSeries) {
+      setSelectedSeries(urlSeries);
+    } else {
+      setSelectedSeries(null);
+    }
+  }, [urlDim, urlSeries]);
 
   // Filter series dynamically by selected dimension
   const currentSeriesList = series.filter(s => s.dimension === selectedDim);
@@ -54,6 +75,14 @@ export default function TilesMarketplace() {
     setSelectedSeries(null); // Reset active series on dimension swap
     setCurrentPage(1);
     setCurrentSeriesPage(1); // Reset series page
+
+    // Update URL query parameters
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams();
+      params.set("dim", dim);
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.replaceState(null, '', newUrl);
+    }
   };
 
   const handleSeriesPageChange = (page) => {
@@ -90,6 +119,15 @@ export default function TilesMarketplace() {
   const handleSelectSeries = (seriesName) => {
     setSelectedSeries(seriesName);
     setCurrentPage(1); // Reset page to 1
+
+    // Update URL query parameters
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams();
+      params.set("dim", selectedDim);
+      if (seriesName) params.set("series", seriesName);
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.pushState(null, '', newUrl);
+    }
   };
 
   const handlePageChange = (page) => {
@@ -119,21 +157,11 @@ export default function TilesMarketplace() {
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               className="space-y-12"
             >
-              {/* Page Header */}
-              <div className="text-center space-y-4 max-w-3xl mx-auto">
-                {/* <span className="text-accent font-bold text-xs uppercase tracking-widest bg-rose-50 border border-rose-100 px-3.5 py-1.5 rounded-full inline-block">
-                  Vitrified Architectural Series
-                </span> */}
-                <h1 className="text-4xl md:text-6xl font-black text-primary tracking-tight leading-none">
-                  Tiles Curation Marketplace
-                </h1>
-                <p className="text-slate-500 font-semibold text-sm md:text-base leading-relaxed">
-                  Discover curated material concepts engineered for master developments. Browse by technical dimensional slabs to explore architectural portfolios.
-                </p>
-              </div>
+              {/* Premium Visual Hero Section */}
+              <TilesHero />
 
               {/* Premium Tab Switcher for Dimensions */}
-              <div className="flex justify-center">
+              <div className="flex justify-center mb-10">
                 <div className="inline-flex p-1.5 bg-slate-100/80 backdrop-blur-md rounded-2xl border border-slate-200/40 shadow-xs">
                   {[
                     { id: "600x600", label: "600 x 600 mm", desc: "Square Slabs" },
@@ -167,7 +195,7 @@ export default function TilesMarketplace() {
               </div>
 
               {/* Series Listing Grid */}
-              {loading ? (
+              {!isMounted || loading ? (
                 <div className="flex flex-col items-center justify-center py-36 space-y-4">
                   <div className="w-10 h-10 border-4 border-slate-200 border-t-black rounded-full animate-spin" />
                   <span className="text-sm text-slate-400 font-bold tracking-widest uppercase animate-pulse">
@@ -185,55 +213,16 @@ export default function TilesMarketplace() {
               ) : (
                 <div className="space-y-12">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {paginatedSeriesList.map((ser, index) => {
-                      const seriesTiles = tiles.filter(t => (t.dimension || "600x1200") === selectedDim && t.series === ser.name);
-                      const finishTypes = [...new Set(seriesTiles.map(t => t.finish || "Glossy"))];
-                      
-                      return (
-                        <motion.div
-                          key={ser.id}
-                          initial={{ opacity: 0, y: 30 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                          onClick={() => handleSelectSeries(ser.name)}
-                          className="group relative h-[260px] rounded-2xl bg-white border border-slate-200/55 shadow-xs overflow-hidden cursor-pointer transition-all duration-500 hover:shadow-2xl hover:-translate-y-1.5 flex flex-col justify-end"
-                        >
-                          {/* Background Image with Hover Scale */}
-                          <div className="absolute inset-0">
-                            <img 
-                              src={ser.image_url || 'https://images.unsplash.com/photo-1501183007986-d0d080b147f9?auto=format&fit=crop&w=400&q=80'} 
-                              alt={ser.name}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                            {/* Gradient Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-transparent transition-opacity duration-300 group-hover:via-slate-950/50" />
-                          </div>
-
-                          {/* Bottom Info Content */}
-                          <div className="relative p-5 md:p-6 space-y-2.5 z-20">
-                            <div className="space-y-1">
-                              <h3 className="font-black text-lg md:text-xl text-white tracking-tight leading-tight transition-colors duration-300">
-                                {ser.name}
-                              </h3>
-                              <p className="text-slate-300 text-[10px] font-medium uppercase tracking-wider flex items-center space-x-1.5">
-                                <span>{finishTypes.join(" / ") || "Premium Finishes"}</span>
-                              </p>
-                            </div>
-
-                            <div className="flex items-center justify-between pt-3 border-t border-white/15">
-                              <span className="text-[9px] font-extrabold tracking-widest uppercase text-white bg-transparent border border-accent/20 px-2.5 py-1 rounded-md">
-                                {seriesTiles.length === 1 ? "1 Design Available" : `${seriesTiles.length} Designs Available`}
-                              </span>
-                              
-                              <span className="text-xs font-black text-white/80 hover:text-white transition-colors flex items-center space-x-1 cursor-pointer">
-                                <span>Explore Curation</span>
-                                <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-                              </span>
-                            </div>
-                          </div>
-                        </motion.div>
-                      );
-                    })}
+                    {paginatedSeriesList.map((ser, index) => (
+                      <SeriesCard
+                        key={ser.id}
+                        ser={ser}
+                        index={index}
+                        tiles={tiles}
+                        selectedDim={selectedDim}
+                        onClick={() => handleSelectSeries(ser.name)}
+                      />
+                    ))}
                   </div>
 
                   {/* Series Pagination Footer */}
@@ -312,7 +301,16 @@ export default function TilesMarketplace() {
               {/* Back Button & Curation Metadata Panel */}
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <button
-                  onClick={() => setSelectedSeries(null)}
+                  onClick={() => {
+                    setSelectedSeries(null);
+                    // Update URL query parameters
+                    if (typeof window !== "undefined") {
+                      const params = new URLSearchParams();
+                      params.set("dim", selectedDim);
+                      const newUrl = `${window.location.pathname}?${params.toString()}`;
+                      window.history.pushState(null, '', newUrl);
+                    }
+                  }}
                   className="inline-flex items-center space-x-2.5 text-slate-600 hover:text-slate-900 font-extrabold text-xs uppercase tracking-widest bg-white hover:bg-slate-50 border border-slate-200/60 shadow-xs px-5 py-3 rounded-full transition-all duration-300 cursor-pointer group w-fit"
                 >
                   <ChevronLeft size={16} className="transition-transform group-hover:-translate-x-1 text-slate-500" />
@@ -338,7 +336,14 @@ export default function TilesMarketplace() {
               </div>
 
               {/* Product Grid */}
-              {activeTiles.length === 0 ? (
+              {!isMounted || loading ? (
+                <div className="flex flex-col items-center justify-center py-36 space-y-4">
+                  <div className="w-10 h-10 border-4 border-slate-200 border-t-black rounded-full animate-spin" />
+                  <span className="text-sm text-slate-400 font-bold tracking-widest uppercase animate-pulse">
+                    Refining Material Series...
+                  </span>
+                </div>
+              ) : activeTiles.length === 0 ? (
                 <div className="glass-panel p-20 rounded-3xl flex flex-col items-center justify-center text-center space-y-4 shadow-xs max-w-2xl mx-auto border border-slate-200/50">
                   <AlertTriangle size={48} className="text-accent animate-pulse" />
                   <h3 className="font-extrabold text-xl text-primary">No Designs Registered</h3>
@@ -346,7 +351,16 @@ export default function TilesMarketplace() {
                     No vitrified slabs are currently registered under the "{selectedSeries}" series.
                   </p>
                   <button
-                    onClick={() => setSelectedSeries(null)}
+                    onClick={() => {
+                      setSelectedSeries(null);
+                      // Update URL query parameters
+                      if (typeof window !== "undefined") {
+                        const params = new URLSearchParams();
+                        params.set("dim", selectedDim);
+                        const newUrl = `${window.location.pathname}?${params.toString()}`;
+                        window.history.pushState(null, '', newUrl);
+                      }
+                    }}
                     className="px-6 py-3 bg-accent hover:opacity-90 text-white rounded-xl text-xs font-extrabold tracking-widest transition-all shadow-md cursor-pointer"
                   >
                     Return to Catalog
@@ -357,76 +371,13 @@ export default function TilesMarketplace() {
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     <AnimatePresence mode="popLayout">
                       {paginatedTiles.map((tile) => (
-                        <motion.div
-                          layout
+                        <TileCard
                           key={tile.id}
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                          style={cardStyle}
-                          className="group relative flex flex-col justify-end rounded-xl overflow-hidden border border-slate-200/40 shadow-2xs hover:shadow-xl hover:shadow-slate-350/30 hover:-translate-y-1 transition-all duration-400 cursor-pointer"
-                        >
-                          {/* Full Image Background */}
-                          <div className="absolute inset-0 z-0 ">
-                            <img
-                              src={tile.image_url}
-                              alt={tile.name}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/30 to-transparent transition-opacity duration-300 group-hover:via-slate-950/40" />
-                          </div>
-
-                          {/* Top Badge */}
-                          <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
-                            <span className="text-[7px] font-black tracking-widest uppercase text-white bg-white/10 backdrop-blur-md border border-white/15 px-2 py-0.5 rounded shadow-xs truncate max-w-[60%]">
-                              {tile.series || "Designer"}
-                            </span>
-                            <span className="text-[7px] font-bold text-white/70 tracking-wider bg-black/25 backdrop-blur-xs px-1.5 py-0.5 rounded border border-white/5">
-                              {selectedDim}
-                            </span>
-                          </div>
-
-                          {/* Bottom Overlay */}
-                          <div className="p-3 space-y-2 w-full z-10 relative ">
-                            <div className="space-y-0.5">
-                              <h3 className="font-bold text-sm text-white tracking-tight leading-snug transition-colors duration-300 line-clamp-1">
-                                {tile.name}
-                              </h3>
-                            </div>
-
-                            {/* Specs row */}
-                            <div className="flex items-center space-x-1.5 text-[8px] text-slate-400 font-bold tracking-wider select-none border-t border-white/10 pt-1.5">
-                              <span>{tile.thickness || "10mm"}</span>
-                              <span className="w-0.5 h-0.5 rounded-full bg-white/30"></span>
-                              <span className="truncate">{tile.finish || "Polished"}</span>
-                              <span className="w-0.5 h-0.5 rounded-full bg-white/30"></span>
-                              <span>{tile.location || "Indoor"}</span>
-                            </div>
-
-                            {/* Action buttons */}
-                            <div className={`grid gap-2 shrink-0 ${tile.external_link ? 'grid-cols-2' : 'grid-cols-1'}`}>
-                              <Link
-                                href={`/tiles/${tile.id}`}
-                                className="py-2 bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/15 text-white font-extrabold text-[8px] uppercase tracking-widest rounded-lg transition-all duration-300 shadow-2xs hover:shadow-md flex items-center justify-center space-x-1 text-center cursor-pointer"
-                              >
-                                <Eye size={10} />
-                                <span>Inspect</span>
-                              </Link>
-                              {tile.external_link && (
-                                <a
-                                  href={tile.external_link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="py-2 bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/15 text-white font-extrabold text-[8px] uppercase tracking-widest rounded-lg transition-all duration-300 shadow-2xs hover:shadow-md flex items-center justify-center space-x-1 text-center cursor-pointer"
-                                >
-                                  <ExternalLink size={10} />
-                                  <span>3D</span>
-                                </a>
-                              )}
-                            </div>
-                          </div>
-                        </motion.div>
+                          tile={tile}
+                          selectedDim={selectedDim}
+                          selectedSeries={selectedSeries}
+                          cardStyle={cardStyle}
+                        />
                       ))}
                     </AnimatePresence>
                   </div>
@@ -497,5 +448,23 @@ export default function TilesMarketplace() {
 
       </div>
     </main>
+  );
+}
+
+export default function TilesMarketplace() {
+  return (
+    <Suspense fallback={
+      <main className="relative min-h-screen pt-28 pb-20 bg-slate-50/20 overflow-hidden flex items-center justify-center">
+        <BackgroundShapes />
+        <div className="flex flex-col items-center justify-center py-36 space-y-4 relative z-10">
+          <div className="w-10 h-10 border-4 border-slate-200 border-t-black rounded-full animate-spin" />
+          <span className="text-sm text-slate-400 font-bold tracking-widest uppercase animate-pulse">
+            Refining Material Series...
+          </span>
+        </div>
+      </main>
+    }>
+      <TilesMarketplaceContent />
+    </Suspense>
   );
 }

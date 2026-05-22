@@ -63,18 +63,21 @@ export default function AboutPage() {
 
   const dimensions = [
     {
+      key: "600x1200",
       size: "600 x 1200 mm",
       type: "Vitrified Slabs",
       finishes: "High Gloss, Super High Gloss, Rocker HL, Surface Satin",
       bestFor: "Luxury interior flooring, commercial lobbies, and seamless feature walls."
     },
     {
+      key: "600x600",
       size: "600 x 600 mm",
       type: "Standard Floor Slabs",
       finishes: "Crystal Polish, Plain Wood Punch, Optimus Ruston Matt",
       bestFor: "High-traffic retail environments, living spaces, and heavy-duty patios."
     },
     {
+      key: "195x1200",
       size: "195 x 1200 mm",
       type: "Woodee Planks",
       finishes: "Rustic Wood Punch, Satin Matt, Metal Strip Inlay",
@@ -86,28 +89,97 @@ export default function AboutPage() {
     <main className="relative min-h-screen pt-24 pb-20 overflow-hidden bg-slate-50/50">
       <BackgroundShapes />
 
-      {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-6 py-12 relative z-10">
-        <div className="text-center max-w-3xl mx-auto space-y-6">
+      {/* Premium Visual Hero Section */}
+      <section className="max-w-7xl mx-auto px-6 pt-6 pb-12 relative z-10">
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/50 bg-[#111625] min-h-[420px] md:min-h-[480px] flex items-center px-8 md:px-16 py-12">
+          {/* Immersive background image with premium dark overlay */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+              alt="Sonata Architectural Ceramic Inception"
+              className="w-full h-full object-cover opacity-30 filter contrast-125 saturate-50"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#111625] via-[#111625]/90 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#111625] via-transparent to-[#111625]/30" />
+          </div>
 
-          
-          <motion.h1
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-4xl md:text-6xl font-black tracking-tight text-primary leading-none"
-          >
-            Crafting the Foundations of <span className="text-accent">Luxury</span>
-          </motion.h1>
-          
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg text-slate-500 font-medium leading-relaxed"
-          >
-            Established in 2002, Sonata Ceramica emerged as the first ceramic floor tile manufacturing pioneer in Himatnagar, Gujarat. We fuse advanced European vitrified engineering with artistic design to elevate spaces globally.
-          </motion.p>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full relative z-10">
+            {/* Left side content */}
+            <div className="lg:col-span-7 space-y-6 text-left">
+
+              <div className="space-y-4">
+                <motion.h1
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.1 }}
+                  className="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-none"
+                >
+                  Crafting the Foundations of <br />
+                  <span className="text-slate-300 font-heading italic font-light">Luxury Architecture</span>
+                </motion.h1>
+              </div>
+              
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-slate-350 text-xs md:text-sm leading-relaxed max-w-xl font-medium"
+              >
+                Established in Himatnagar, Gujarat, Sonata Tiles emerged as the first floor tiles production unit in the region. Over two decades, we have continuously fused European high-temperature vitrified engineering with exquisite design styles.
+              </motion.p>
+
+              {/* Inception quick parameters */}
+              <div className="flex flex-wrap gap-2.5 pt-2 select-none">
+                {[
+                  { label: "Sabarkantha Hub" },
+                  { label: "ISO 9001-2008 Precision" },
+                  { label: "High-Temp Vitrification" },
+                  { label: "Double-Charge Slabs" }
+                ].map((spec, i) => (
+                  <span
+                    key={i}
+                    className="text-[9px] font-mono text-slate-300 bg-white/5 border border-white/10 px-2.5 py-1 rounded-md flex items-center gap-1.5"
+                  >
+                    <CheckCircle2 size={10} className="text-white" />
+                    {spec.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Right side floating glassmorphic info pane */}
+            <div className="lg:col-span-5 hidden lg:flex justify-end">
+              <motion.div
+                initial={{ opacity: 0, y: 25 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="glass-panel-dark p-8 rounded-2xl border border-white/10 w-full max-w-[340px] text-left space-y-6 relative overflow-hidden"
+              >
+                {/* Accent red background glow overlay */}
+                <div className="absolute top-0 right-0 w-24 h-24 bg-accent/20 rounded-full blur-2xl pointer-events-none" />
+
+                <div className="space-y-4">
+                  <span className="text-[10px] font-bold text-white uppercase tracking-widest block">Quality Benchmark</span>
+                  <p className="text-xs text-slate-300 font-semibold leading-relaxed">
+                    "International technology and strict control guarantee every slab remains flat, durable, and highly vitrified."
+                  </p>
+                </div>
+
+                <div className="h-px bg-white/10" />
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <span className="text-3xl font-black text-white font-mono leading-none tracking-tight block">20+</span>
+                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider block mt-1">Countries Exported</span>
+                  </div>
+                  <div>
+                    <span className="text-3xl font-black text-white font-mono leading-none tracking-tight block">25+</span>
+                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider block mt-1">States Reach</span>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -331,7 +403,7 @@ export default function AboutPage() {
                 {/* Action Link Column */}
                 <div className="lg:col-span-1 flex lg:justify-end">
                   <Link
-                    href={`/tiles?dimension=${dim.size.replace(/\s+/g, "")}`}
+                    href={`/tiles?dim=${dim.key}`}
                     className="w-10 h-10 rounded-full border border-slate-200 bg-white flex items-center justify-center text-primary hover:text-white hover:bg-primary hover:border-primary transition-all duration-300 group/arrow shadow-sm hover:shadow-md"
                     title={`Browse ${dim.size} Catalog`}
                   >
@@ -344,8 +416,42 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Factory Location Map Section */}
+      <section className="max-w-7xl mx-auto px-6 py-10 relative z-10">
+        <div className="max-w-xl space-y-4 mb-10 text-left">
+          <span className="text-black font-bold text-xs uppercase tracking-widest block">
+            Manufacturing Headquarters
+          </span>
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-primary leading-tight">
+            Our Gujarat Production Facility
+          </h2>
+          <p className="text-slate-500 text-sm font-medium leading-relaxed font-sans">
+            Centrally located in Gadhoda, Himatnagar, our state-of-the-art plant is fully equipped with advanced industrial ovens, high-pressure molds, and seamless transport connectivity.
+          </p>
+        </div>
 
-
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-3xl overflow-hidden border border-slate-200/50 shadow-md bg-white p-4"
+        >
+          <div className="w-full h-[400px] rounded-2xl overflow-hidden relative">
+            <iframe
+              src="https://maps.google.com/maps?q=Sonata%20Ceramica%20Pvt.%20Ltd,%20Gadhoda,%20Himatnagar,%20Gujarat%20383001&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Sonata Ceramica Pvt. Ltd. Production Facility Map"
+              className="w-full h-full"
+            />
+          </div>
+        </motion.div>
+      </section>
 
       {/* Corporate Contact CTA */}
       <section className="max-w-5xl mx-auto px-6 py-20 relative z-10">

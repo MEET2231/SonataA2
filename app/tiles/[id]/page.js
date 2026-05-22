@@ -15,6 +15,22 @@ export default function TileDetailPage() {
   const router = useRouter();
   const [tile, setTile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [backUrl, setBackUrl] = useState("/tiles");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const fromDim = params.get("fromDim");
+      const fromSeries = params.get("fromSeries");
+      
+      const backParams = new URLSearchParams();
+      if (fromDim) backParams.set("dim", fromDim);
+      if (fromSeries) backParams.set("series", fromSeries);
+      
+      const queryString = backParams.toString();
+      setBackUrl(`/tiles${queryString ? '?' + queryString : ''}`);
+    }
+  }, []);
   
   // Magnifier State for raw slab
   const [zoomStyle, setZoomStyle] = useState({ display: "none" });
@@ -116,13 +132,35 @@ export default function TileDetailPage() {
 
     setIsSubmitting(true);
     try {
+      // Prepend slab series and dimensions to the database message log
+      const formattedDbMessage = `Series: ${tile?.series || "Designer"}\nDimension: ${(tile?.dimension || "600x1200").toUpperCase()} MM\n\n${enquiryForm.message}`;
+
       await dataService.addEnquiry({
         tile_name: tile?.name,
         user_name: enquiryForm.userName,
         user_email: enquiryForm.userEmail,
         user_phone: enquiryForm.userPhone,
-        message: enquiryForm.message
+        message: formattedDbMessage
       });
+      
+      // Asynchronously send email notification via server API
+      try {
+        fetch("/api/send-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_name: enquiryForm.userName,
+            user_email: enquiryForm.userEmail,
+            user_phone: enquiryForm.userPhone,
+            tile_name: `Vitrified Slab Inquiry: ${tile?.name || "Premium Tile"}`,
+            tile_series: tile?.series || "Designer",
+            tile_dimension: tile?.dimension || "600x1200",
+            message: enquiryForm.message
+          })
+        }).catch(err => console.error("Email notification dispatch error:", err));
+      } catch (emailErr) {
+        console.error("Email notification dispatch failed:", emailErr);
+      }
       
       setSubmitSuccess(true);
       setEnquiryForm({
@@ -317,7 +355,7 @@ export default function TileDetailPage() {
       <div className="flex flex-col items-center justify-center min-h-screen text-center space-y-4 pt-20 bg-[#121315] text-slate-400">
         <h3 className="font-extrabold text-2xl text-rose-500">Tile Design Not Found</h3>
         <p className="text-slate-500 font-medium">The requested spec sheet could not be located in our records.</p>
-        <Link href="/tiles" className="px-6 py-2.5 bg-[#c29979] text-white text-xs font-bold rounded-lg hover:bg-[#b08766] transition-all">
+        <Link href={backUrl} className="px-6 py-2.5 bg-[#c29979] text-white text-xs font-bold rounded-lg hover:bg-[#b08766] transition-all">
           Return to Showroom
         </Link>
       </div>
@@ -362,7 +400,7 @@ export default function TileDetailPage() {
         
         {/* Breadcrumb Navigation - Muted Elegant */}
         <div className="flex items-center space-x-2 text-xs font-bold text-slate-500/80 uppercase tracking-widest mb-6">
-          <Link href="/tiles" className="hover:text-[#c29979] transition-colors flex items-center space-x-1">
+          <Link href={backUrl} className="hover:text-[#c29979] transition-colors flex items-center space-x-1">
             <ArrowLeft size={12} />
             <span>Showroom</span>
           </Link>
@@ -467,7 +505,7 @@ export default function TileDetailPage() {
 
                   {/* BACK TO INDEX button style */}
                   <Link 
-                    href="/tiles" 
+                    href={backUrl} 
                     className="px-3.5 py-1.5 bg-black/20 hover:bg-black/35 border border-white/15 rounded-full text-[8.5px] font-black uppercase tracking-widest text-white flex items-center space-x-1 transition-all duration-300 shadow-sm"
                   >
                     <ArrowLeft size={9} />
