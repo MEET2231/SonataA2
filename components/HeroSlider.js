@@ -44,6 +44,7 @@ const slides = [
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [direction, setDirection] = useState(1);
 
   useEffect(() => {
     if (isHovered) return;
@@ -54,10 +55,12 @@ export default function HeroSlider() {
   }, [isHovered]);
 
   const handlePrev = () => {
+    setDirection(-1);
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
   const handleNext = () => {
+    setDirection(1);
     setCurrent((prev) => (prev + 1) % slides.length);
   };
 
@@ -68,13 +71,13 @@ export default function HeroSlider() {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Background Image Carousel with Cross-Fade */}
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="sync" initial={false}>
         <motion.div
           key={current}
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
+          initial={{ x: direction > 0 ? "100%" : "-100%", opacity: 1 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: direction > 0 ? "-100%" : "100%", opacity: 1 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
           className="absolute inset-0"
         >
           <Image

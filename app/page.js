@@ -22,28 +22,28 @@ const categories = [
     tagline: "Finess that delights",
     image: "/images/CAT_PUNCH.jpeg",
     link: "/tiles",
-    color: "from-blue-900/60 to-slate-900/90"
+    color: "from gray-300 to-gray-500"
   },
   {
     name: "CRYSTAL",
     tagline: "Shines like a gem",
     image: "/images/CAT_CRYSTAL.jpeg",
     link: "/tiles",
-    color: "from-amber-900/60 to-slate-900/90"
+    color: "from gray-300 to-gray-500"
   },
   {
     name: "ICONIC",
     tagline: "Timeless Icon of Design",
     image: "/images/CAT_ICONIC.jpeg",
     link: "/tiles",
-    color: "from-slate-800/60 to-slate-900/90"
+    color: "from gray-300 to-gray-500"
   },
   {
     name: "ROCKER",
     tagline: "Handcrafted Pigment Gloss",
     image: "/images/CAT_ROCKER.jpeg",
     link: "/tiles",
-    color: "from-emerald-900/60 to-slate-900/90"
+    color: "from gray-300 to-gray-500"
   }
 ];
 
@@ -115,9 +115,9 @@ export default function Home() {
           const idx = (activeCategory + i) % categories.length;
           const cat = categories[idx];
           return (
-            <div key={cat.name} className="relative rounded-xl overflow-hidden border border-slate-200/30">
+            <div key={cat.name} className="relative rounded-xl overflow-hidden border border-slate-200/30 bg-slate-200/40">
               <img src={cat.image} alt={cat.name} className="w-full h-32 object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-br from-slate-100/15 via-slate-400/10 to-slate-900/25" />
               <div className="absolute bottom-2 left-2 text-white text-sm font-medium">{cat.name}</div>
             </div>
           );
@@ -136,17 +136,17 @@ export default function Home() {
           {/* Right Column: Dynamic Slider Showcase Card with zoom effect (Col-span 7) */}
           <div className="lg:col-span-7 flex justify-center items-center">
             <div 
-              className="relative w-full max-w-[600px] h-[450px] rounded-[2.5rem] overflow-hidden shadow-2xl bg-slate-900 border border-slate-200/10 group/card cursor-pointer"
+              className="relative w-full max-w-[600px] h-[450px] rounded-[2.5rem] overflow-hidden shadow-2xl bg-slate-800 border border-slate-200/10 group/card cursor-pointer"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode="sync">
                 <motion.div
                   key={activeCategory}
-                  initial={{ opacity: 0, scale: 1.04 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: 1, x: 600 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 1, x: -600 }}
+                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                   className="absolute inset-0 w-full h-full"
                 >
                   {/* Background Image */}
@@ -166,8 +166,7 @@ export default function Home() {
                     />
                   )}
 
-                  {/* Gradient Overlay */}
-                  <div className={`absolute inset-0 bg-gradient-to-t ${categories[activeCategory].color} opacity-85 group-hover/card:opacity-90 transition-opacity duration-300`} />
+                  <div className="absolute inset-0 bg-gradient-to-br from-slate-100/20 via-slate-300/15 to-slate-900/35" />
 
                   {/* Details Overlay */}
                   <div className="absolute inset-0 z-10 p-10 flex flex-col justify-end text-white text-left space-y-4">
@@ -185,7 +184,7 @@ export default function Home() {
                     <div className="pt-2">
                       <Link
                         href={categories[activeCategory].link}
-                        className="inline-flex items-center space-x-2 px-6 py-3 bg-gray-500/20 hover:bg-gray-500/30 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 shadow-md group/btn hover:shadow-[0_0_20px_rgba(99,102,241,0.35)] hover:drop-shadow-xl"
+                        className="inline-flex items-center space-x-2 px-6 py-3 bg-slate-500/30 hover:bg-slate-500/40 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 shadow-md group/btn hover:shadow-[0_0_20px_rgba(100,116,139,0.35)] hover:drop-shadow-xl"
                       >
                         <span>View Specifications</span>
                         <ArrowRight size={14} className="transition-transform duration-300 group-hover/btn:translate-x-1" />
@@ -216,7 +215,7 @@ export default function Home() {
             <div className="lg:col-span-6 relative group">
               {/* Visual background elements */}
               <div className="absolute -inset-4 bg-gradient-to-tr from-accent/5 to-slate-200/20 rounded-3xl blur-xl opacity-80 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-slate-200/80 bg-slate-100 shadow-lg">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-slate-200/80 bg-slate-200/60 shadow-lg">
                 <Image
                   src="/images/plant_image.jpg"
                   alt="Sonata Tiles Himatnagar Manufacturing Unit"
@@ -278,7 +277,7 @@ export default function Home() {
             {/* Visual Box */}
             <div className="lg:col-span-5 relative group">
               <div className="absolute inset-0 bg-accent/10 rounded-3xl blur-2xl transition-colors duration-500 pointer-events-none" />
-              <div className="relative glass-panel p-8 rounded-3xl border border-slate-200/60 shadow-xl space-y-6 overflow-hidden">
+              <div className="relative glass-panel p-8 rounded-3xl border border-slate-200/60 shadow-xl space-y-6 overflow-hidden bg-slate-100/70">
                 <div className="space-y-2">
                   <h3 className="text-3xl font-black text-primary tracking-tight">Since 2002</h3>
                   <p className="text-sm text-slate-500 font-medium leading-relaxed font-sans">
@@ -440,7 +439,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: idx * 0.1 }}
-              className="glass-panel p-8 rounded-2xl flex items-start space-x-4"
+              className="glass-panel p-8 rounded-2xl flex items-start space-x-4 bg-slate-100/70"
             >
               <div className="p-3.5 rounded-xl bg-slate-100 text-primary">
                 {stat.icon}

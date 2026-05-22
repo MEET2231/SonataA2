@@ -380,12 +380,9 @@ export default function TileDetailPage() {
     : "12mm Calibrated";
 
   const getResolvedMaterial = (t) => {
+    if (t.material && t.material.trim() !== "") return t.material;
     if (t.specs?.material) return t.specs.material;
-    const dim = (t.dimension || "").toLowerCase();
-    const loc = (t.location || "").toLowerCase();
-    if (dim.includes("195")) return "Vitrified Porcelain (Wood Look)";
-    if (loc.includes("wall")) return "Monocottura Ceramic";
-    return "Glazed Vitrified";
+    return "Vitrified";
   };
   const resolvedMaterial = getResolvedMaterial(tile);
 
@@ -537,7 +534,11 @@ export default function TileDetailPage() {
                         <td className="py-2.5 px-3 font-bold opacity-60 uppercase">Finishing</td>
                         <td className="py-2.5 px-3 font-black text-right sm:text-left">{resolvedFinish}</td>
                       </tr>
-                      <tr className={`${theme.tableRowEven}`}>
+                      <tr className={`border-b ${theme.tableBorder} ${theme.tableRowEven}`}>
+                        <td className="py-2.5 px-3 font-bold opacity-60 uppercase">Applications</td>
+                        <td className="py-2.5 px-3 font-black text-right sm:text-left">{tile.location || "Indoor / Floor / Wall"}</td>
+                      </tr>
+                      <tr className={`${theme.tableRowOdd}`}>
                         <td className="py-2.5 px-3 font-bold opacity-60 uppercase">Sizes</td>
                         <td className={`py-2.5 px-3 font-black text-right sm:text-left ${theme.textAccent}`}>{resolvedSizes}</td>
                       </tr>

@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS public.tiles (
     finish text DEFAULT 'Glossy'::text,
     random_faces text DEFAULT '03'::text,
     external_link text, -- 3D Viewer action button link
+    material text, -- Material type of the tile (Vitrified, Ceramic, etc.)
     image_url text, -- Product showcase slab image
     created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
 );
@@ -44,6 +45,7 @@ CREATE TABLE IF NOT EXISTS public.catalogues (
     description text,
     cover_image_url text,
     pdf_url text,
+    dimension text DEFAULT '600x1200'::text,
     created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -90,6 +92,10 @@ BEGIN
         ALTER TABLE public.tiles ADD COLUMN series text;
     END IF;
 
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='tiles' AND column_name='material') THEN
+        ALTER TABLE public.tiles ADD COLUMN material text;
+    END IF;
+
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='tiles' AND column_name='finish') THEN
         ALTER TABLE public.tiles ADD COLUMN finish text DEFAULT 'Glossy';
     END IF;
@@ -109,6 +115,14 @@ BEGIN
 
     IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='tiles' AND column_name='style') THEN
         ALTER TABLE public.tiles DROP COLUMN style;
+    END IF;
+END $$;
+
+-- Update 'catalogues' table
+DO $$ 
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='catalogues' AND column_name='dimension') THEN
+        ALTER TABLE public.catalogues ADD COLUMN dimension text DEFAULT '600x1200';
     END IF;
 END $$;
 

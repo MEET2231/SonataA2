@@ -26,6 +26,11 @@ export default function AdminPortal() {
   const [enquiries, setEnquiries] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Slabs filtering and pagination states
+  const [tilesFilterDim, setTilesFilterDim] = useState("all");
+  const [tilesFilterSeries, setTilesFilterSeries] = useState("all");
+  const [tilesPage, setTilesPage] = useState(1);
+
   // Forms
   const [tileForm, setTileForm] = useState({
     name: "",
@@ -36,7 +41,8 @@ export default function AdminPortal() {
     series: "",
     finish: "Glossy",
     random_faces: "03",
-    external_link: ""
+    external_link: "",
+    material: ""
   });
   const [tileImage, setTileImage] = useState(null);
   const [seriesImage, setSeriesImage] = useState(null);
@@ -160,7 +166,8 @@ export default function AdminPortal() {
         series: tileForm.series,
         finish: "Glossy",
         random_faces: "03",
-        external_link: ""
+        external_link: "",
+        material: ""
       });
       setTileImage(null);
       // Clear file inputs manually
@@ -394,6 +401,26 @@ export default function AdminPortal() {
       setTimeout(() => setActionError(""), 5500);
     }
   };
+
+  // Filtered tiles calculation
+  const filteredTiles = tiles.filter(tile => {
+    const matchesDim = tilesFilterDim === "all" || tile.dimension === tilesFilterDim;
+    const matchesSeries = tilesFilterSeries === "all" || tile.series === tilesFilterSeries;
+    return matchesDim && matchesSeries;
+  });
+
+  const availableSeriesForFilter = tilesFilterDim === "all" 
+    ? series 
+    : series.filter(s => s.dimension === tilesFilterDim);
+
+  const TILES_PER_PAGE = 15;
+  const totalTilesPages = Math.ceil(filteredTiles.length / TILES_PER_PAGE);
+  const currentTilesPage = Math.min(tilesPage, Math.max(1, totalTilesPages));
+  
+  const paginatedTiles = filteredTiles.slice(
+    (currentTilesPage - 1) * TILES_PER_PAGE,
+    currentTilesPage * TILES_PER_PAGE
+  );
 
   if (!isAuthenticated) {
     return (
@@ -743,15 +770,32 @@ export default function AdminPortal() {
                           </div>
 
                           <div className="space-y-1">
-                            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">3D Viewer action link (URL)</label>
-                            <input
-                              type="url"
-                              value={tileForm.external_link}
-                              onChange={e => setTileForm(prev => ({ ...prev, external_link: e.target.value }))}
-                              placeholder="e.g. https://buy.sonatatiles.com/grizly-mint"
+                            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Material</label>
+                            <select
+                              value={tileForm.material}
+                              onChange={e => setTileForm(prev => ({ ...prev, material: e.target.value }))}
                               className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-xs font-semibold focus:outline-none focus:border-slate-400 shadow-xs bg-white"
-                            />
+                            >
+                              <option value="">(Auto-Detect/Vitrified)</option>
+                              <option>Vitrified</option>
+                              <option>Ceramic</option>
+                              <option>Vitrified Porcelain</option>
+                              <option>Double Charge</option>
+                              <option>Glazed Vitrified</option>
+                              <option>Soluble Salt</option>
+                            </select>
                           </div>
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">3D Viewer action link (URL)</label>
+                          <input
+                            type="url"
+                            value={tileForm.external_link}
+                            onChange={e => setTileForm(prev => ({ ...prev, external_link: e.target.value }))}
+                            placeholder="e.g. https://buy.sonatatiles.com/grizly-mint"
+                            className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-xs font-semibold focus:outline-none focus:border-slate-400 shadow-xs bg-white"
+                          />
                         </div>
 
                         <div className="space-y-1">
@@ -807,48 +851,171 @@ export default function AdminPortal() {
 
                     {/* Show Active List */}
                     <div className="bg-white border border-slate-200/50 rounded-3xl overflow-hidden shadow-xs">
-                      <div className="p-5 border-b border-slate-100 flex items-center justify-between">
-                        <h4 className="font-extrabold text-sm text-primary uppercase tracking-wider">Active Slabs Showroom ({tiles.length})</h4>
+                      <div className="p-5 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div className="space-y-0.5">
+                          <h4 className="font-extrabold text-sm text-primary uppercase tracking-wider">Active Slabs Showroom ({filteredTiles.length})</h4>
+                          {filteredTiles.length !== tiles.length && (
+                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                              Showing {filteredTiles.length} of {tiles.length} Total Slabs
+                            </p>
+                          )}
+                        </div>
+                        
+                        {/* Filters Panel */}
+                        <div className="flex flex-wrap items-center gap-3">
+                          {/* Dimension Filter */}
+                          <div className="flex items-center space-x-1.5">
+                            <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Size:</span>
+                            <select
+                              value={tilesFilterDim}
+                              onChange={(e) => {
+                                setTilesFilterDim(e.target.value);
+                                setTilesFilterSeries("all");
+                                setTilesPage(1);
+                              }}
+                              className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-primary focus:outline-none focus:border-slate-400 cursor-pointer"
+                            >
+                              <option value="all">All Sizes</option>
+                              <option value="600x600">600 x 600 mm</option>
+                              <option value="600x1200">600 x 1200 mm</option>
+                              <option value="195x1200">195 x 1200 mm</option>
+                            </select>
+                          </div>
+
+                          {/* Series Filter */}
+                          <div className="flex items-center space-x-1.5">
+                            <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Series:</span>
+                            <select
+                              value={tilesFilterSeries}
+                              onChange={(e) => {
+                                setTilesFilterSeries(e.target.value);
+                                setTilesPage(1);
+                              }}
+                              className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold text-primary focus:outline-none focus:border-slate-400 cursor-pointer max-w-[160px]"
+                            >
+                              <option value="all">All Series</option>
+                              {availableSeriesForFilter.map((s) => (
+                                <option key={s.id} value={s.name}>{s.name}</option>
+                              ))}
+                            </select>
+                          </div>
+
+                          {/* Reset Button */}
+                          {(tilesFilterDim !== "all" || tilesFilterSeries !== "all") && (
+                            <button
+                              onClick={() => {
+                                setTilesFilterDim("all");
+                                setTilesFilterSeries("all");
+                                setTilesPage(1);
+                              }}
+                              className="px-2.5 py-1.5 text-[9px] font-bold text-accent bg-accent/10 hover:bg-accent hover:text-white rounded-lg transition-all uppercase tracking-wider cursor-pointer"
+                            >
+                              Reset
+                            </button>
+                          )}
+                        </div>
                       </div>
                       
-                      <div className="divide-y divide-slate-100 text-xs md:text-sm max-h-[500px] overflow-y-auto">
-                        {tiles.map((item) => (
-                          <div key={item.id} className="p-4 flex items-center justify-between gap-4">
-                            <div className="flex items-center space-x-3.5">
-                              <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-100 relative shrink-0">
-                                <img src={item.image_url} className="w-full h-full object-cover" />
-                              </div>
-                              <div className="space-y-0.5">
-                                <h5 className="font-bold text-primary leading-tight">{item.name}</h5>
-                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                                  {item.dimension} &bull; {item.series || "No Series"} &bull; {item.finish} &bull; {item.random_faces ? `${item.random_faces} Randoms` : ""}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex items-center space-x-3">
-                              {item.external_link && (
-                                <a 
-                                  href={item.external_link} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="p-2 text-slate-400 hover:text-primary transition-all"
-                                  title="Open Viewer Call to Action link"
-                                >
-                                  <LinkIcon size={14} />
-                                </a>
-                              )}
-                              <button
-                                onClick={() => handleDeleteTile(item.id, item.image_url)}
-                                className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all cursor-pointer shrink-0"
-                              >
-                                <Trash2 size={16} />
-                              </button>
-                            </div>
+                      <div className="divide-y divide-slate-100 text-xs md:text-sm max-h-[600px] overflow-y-auto">
+                        {paginatedTiles.length === 0 ? (
+                          <div className="p-8 text-center text-slate-400 font-semibold">
+                            No product slabs found matching the selected size or series filters.
                           </div>
-                        ))}
+                        ) : (
+                          paginatedTiles.map((item) => (
+                            <div key={item.id} className="p-4 flex items-center justify-between gap-4">
+                              <div className="flex items-center space-x-3.5">
+                                <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-100 relative shrink-0">
+                                  <img src={item.image_url} className="w-full h-full object-cover" />
+                                </div>
+                                <div className="space-y-0.5">
+                                  <h5 className="font-bold text-primary leading-tight">{item.name}</h5>
+                                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                                    {item.dimension} &bull; {item.series || "No Series"} &bull; {item.finish} &bull; {item.random_faces ? `${item.random_faces} Randoms` : ""}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex items-center space-x-3">
+                                {item.external_link && (
+                                  <a 
+                                    href={item.external_link} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="p-2 text-slate-400 hover:text-primary transition-all"
+                                    title="Open Viewer Call to Action link"
+                                  >
+                                    <LinkIcon size={14} />
+                                  </a>
+                                )}
+                                <button
+                                  onClick={() => handleDeleteTile(item.id, item.image_url)}
+                                  className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all cursor-pointer shrink-0"
+                                >
+                                  <Trash2 size={16} />
+                                </button>
+                              </div>
+                            </div>
+                          ))
+                        )}
                       </div>
-                    </div>
 
+                      {/* Slick Pagination Footer */}
+                      {totalTilesPages > 1 && (
+                        <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs font-semibold">
+                          <span className="text-slate-400 font-bold uppercase tracking-wider">
+                            Page {currentTilesPage} of {totalTilesPages}
+                          </span>
+                          <div className="flex items-center space-x-1">
+                            <button
+                              onClick={() => setTilesPage(p => Math.max(1, p - 1))}
+                              disabled={currentTilesPage === 1}
+                              className={`px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer ${
+                                currentTilesPage === 1 
+                                  ? "bg-slate-50 text-slate-300 border-slate-200 cursor-not-allowed" 
+                                  : "bg-white text-primary border-slate-200 hover:border-slate-400 active:scale-95"
+                              }`}
+                            >
+                              Prev
+                            </button>
+                            
+                            {Array.from({ length: totalTilesPages }, (_, idx) => {
+                              const pageNum = idx + 1;
+                              if (totalTilesPages > 5 && Math.abs(pageNum - currentTilesPage) > 1 && pageNum !== 1 && pageNum !== totalTilesPages) {
+                                if (pageNum === 2 || pageNum === totalTilesPages - 1) {
+                                  return <span key={pageNum} className="px-1 text-slate-300 select-none">...</span>;
+                                }
+                                return null;
+                              }
+                              return (
+                                <button
+                                  key={pageNum}
+                                  onClick={() => setTilesPage(pageNum)}
+                                  className={`px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer ${
+                                    pageNum === currentTilesPage
+                                      ? "bg-accent text-white border-accent font-extrabold"
+                                      : "bg-white text-primary border-slate-200 hover:border-slate-400 active:scale-95"
+                                  }`}
+                                >
+                                  {pageNum}
+                                </button>
+                              );
+                            })}
+
+                            <button
+                              onClick={() => setTilesPage(p => Math.min(totalTilesPages, p + 1))}
+                              disabled={currentTilesPage === totalTilesPages}
+                              className={`px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer ${
+                                currentTilesPage === totalTilesPages 
+                                  ? "bg-slate-50 text-slate-300 border-slate-200 cursor-not-allowed" 
+                                  : "bg-white text-primary border-slate-200 hover:border-slate-400 active:scale-95"
+                              }`}
+                            >
+                              Next
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
 
@@ -1116,11 +1283,22 @@ export default function AdminPortal() {
                               <div className="w-8 h-10 rounded-sm overflow-hidden bg-slate-100 relative shrink-0 shadow-xs border border-slate-200/30">
                                 <img src={item.cover_image_url} className="w-full h-full object-cover" />
                               </div>
-                              <div className="space-y-0.5">
+                              <div className="space-y-1">
                                 <h5 className="font-bold text-primary leading-tight">{item.title}</h5>
-                                <p className="text-[9px] text-slate-400 font-bold max-w-sm truncate">
-                                  {item.description}
-                                </p>
+                                <div className="flex items-center space-x-2">
+                                  <span className="inline-block px-1.5 py-0.5 text-[8px] font-extrabold bg-primary/10 text-primary rounded-md uppercase tracking-wider shrink-0">
+                                    {item.dimension === "600x1200" 
+                                      ? "600 x 1200 mm" 
+                                      : item.dimension === "600x600" 
+                                      ? "600 x 600 mm" 
+                                      : item.dimension === "195x1200" 
+                                      ? "195 x 1200 mm" 
+                                      : item.dimension || "600 x 1200 mm"}
+                                  </span>
+                                  <span className="text-[9px] text-slate-400 font-bold max-w-sm truncate">
+                                    {item.description}
+                                  </span>
+                                </div>
                               </div>
                             </div>
                             <button
