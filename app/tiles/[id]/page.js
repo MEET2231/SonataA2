@@ -376,8 +376,8 @@ export default function TileDetailPage() {
 
   // Dynamic DDL Spec Sheet Deductions (Not Hard-Coded)
   const resolvedThickness = tile.thickness 
-    ? (tile.thickness.toLowerCase().includes("calibrated") ? tile.thickness : `${tile.thickness} Calibrated`) 
-    : "12mm Calibrated";
+    ? (tile.thickness.toLowerCase().includes("calibrated") ? tile.thickness : `${tile.thickness} Apprx.`) 
+    : "10mm Apprx.";
 
   const getResolvedMaterial = (t) => {
     if (t.material && t.material.trim() !== "") return t.material;
